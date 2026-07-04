@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grandma's Kitchen — Natural Herbal Remedies & Traditional Wisdom</title>
+<meta name="description" content="Discover timeless herbal remedies, healing recipes, and natural wellness secrets passed down through generations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://unpkg.com/split-type@0.3.4/umd/index.js"></script>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: auto; }
+body {
+  background: #F8F4EC; font-family: 'Inter', sans-serif; color: #30402E;
+  font-weight: 300; line-height: 1.6; overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: #A8B99A; color: #F8F4EC; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #F8F4EC; }
+::-webkit-scrollbar-thumb { background: #A8B99A; border-radius: 3px; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif; font-weight: 500;
+  line-height: 1.2; color: #30402E;
+}
+h1 { font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 600; letter-spacing: -0.02em; }
+h2 { font-size: clamp(2rem, 4.5vw, 3.8rem); letter-spacing: -0.01em; }
+h3 { font-size: clamp(1.4rem, 2.5vw, 2rem); }
+p, li { font-size: clamp(1rem, 1.2vw, 1.15rem); color: #5a6b4d; line-height: 1.7; }
+a { text-decoration: none; color: inherit; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 36px; border-radius: 50px; border: none;
+  font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 500;
+  cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative; overflow: hidden;
+}
+.btn::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+  opacity: 0; transition: opacity 0.4s;
+}
+.btn:hover::after { opacity: 1; }
+.btn-primary {
+  background: #6B7B4D; color: #F8F4EC;
+}
+.btn-primary:hover { background: #30402E; transform: translateY(-2px); box-shadow: 0 12px 32px rgba(48,64,46,0.2); }
+.btn-secondary {
+  background: transparent; color: #6B7B4D; border: 1.5px solid #A8B99A;
+}
+.btn-secondary:hover { background: #A8B99A; color: #F8F4EC; transform: translateY(-2px); }
+
+.section { padding: 120px 0; position: relative; }
+.section-label {
+  font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.15em; color: #A8B99A;
+  margin-bottom: 12px;
+}
+.section-title { margin-bottom: 20px; }
+.section-desc { max-width: 600px; margin-bottom: 60px; }
+
+/* Floating Particles */
+.particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.particle {
+  position: absolute; width: 12px; height: 12px; opacity: 0;
+  background: #A8B99A; border-radius: 50%;
+  filter: blur(4px);
+}
+.leaf-particle {
+  position: absolute; width: 20px; height: 14px; opacity: 0;
+  background: #A8B99A; border-radius: 50% 0 50% 0;
+  filter: blur(2px);
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 20px 32px; display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(180deg, rgba(248,244,236,0.95) 0%, transparent 100%);
+  transition: all 0.5s;
+}
+nav.scrolled { background: rgba(248,244,236,0.92); backdrop-filter: blur(20px); padding: 14px 32px; box-shadow: 0 1px 0 rgba(48,64,46,0.06); }
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 600; color: #30402E; display: flex; align-items: center; gap: 8px; }
+.nav-logo span { width: 6px; height: 6px; background: #A8B99A; border-radius: 50%; display: inline-block; }
+.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+.nav-links a { font-size: 0.85rem; font-weight: 400; color: #5a6b4d; transition: color 0.3s; position: relative; }
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1.5px;
+  background: #6B7B4D; transition: width 0.3s;
+}
+.nav-links a:hover::after { width: 100%; }
+.nav-links a:hover { color: #30402E; }
+.nav-cta { padding: 8px 20px; font-size: 0.8rem; }
+.nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.nav-toggle span { width: 24px; height: 1.5px; background: #30402E; transition: all 0.3s; border-radius: 2px; }
+
+/* HERO */
+.hero {
+  min-height: 100vh; position: relative; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; overflow: hidden;
+  padding: 120px 24px 60px;
+}
+.hero-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 30%, rgba(168,185,154,0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 70%, rgba(184,155,94,0.06) 0%, transparent 50%),
+              radial-gradient(ellipse at 20% 80%, rgba(107,123,77,0.06) 0%, transparent 50%);
+  z-index: 0;
+}
+.hero-sunlight {
+  position: absolute; top: -20%; left: 50%; transform: translateX(-50%); pointer-events: none;
+  width: 60%; height: 80%;
+  background: linear-gradient(180deg, rgba(248,244,236,0.4) 0%, rgba(168,185,154,0.08) 50%, transparent 100%);
+  filter: blur(60px); z-index: 0;
+  animation: sunlightPulse 6s ease-in-out infinite;
+}
+@keyframes sunlightPulse {
+  0%, 100% { opacity: 0.6; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+}
+#book-canvas-wrap {
+  width: 320px; height: 420px; position: relative; z-index: 2;
+  margin-bottom: 40px; cursor: grab;
+}
+#book-canvas-wrap:active { cursor: grabbing; }
+#book-canvas-wrap canvas { width: 100% !important; height: 100% !important; display: block; }
+.hero-content { text-align: center; position: relative; z-index: 3; max-width: 800px; }
+.hero-content h1 { margin-bottom: 8px; }
+.hero-content h1 .line { display: block; }
+.hero-content .subtitle {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: clamp(1.1rem, 2vw, 1.4rem); color: #A8B99A; margin-bottom: 20px;
+}
+.hero-content p {
+  font-size: clamp(1rem, 1.3vw, 1.15rem); color: #6B7B4D;
+  max-width: 560px; margin: 0 auto 36px; line-height: 1.8;
+}
+.hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.hero-scroll-indicator {
+  position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: #A8B99A; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; z-index: 3;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+.hero-scroll-indicator .scroll-line {
+  width: 1px; height: 30px; background: linear-gradient(180deg, #A8B99A, transparent);
+}
+
+/* WHY SECTION */
+.why-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.why-visual {
+  position: relative; aspect-ratio: 4/5; border-radius: 20px; overflow: hidden;
+  background: linear-gradient(135deg, #EFE6D5, #e8dcc8);
+}
+.why-visual-inner {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px;
+}
+.why-visual-inner .herb-icon {
+  font-size: 6rem; opacity: 0.6; display: block;
+  animation: herbFloat 8s ease-in-out infinite;
+}
+.why-visual-inner .herb-icon:nth-child(2) { font-size: 4rem; animation-delay: -3s; }
+@keyframes herbFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(2deg); }
+  66% { transform: translateY(5px) rotate(-1deg); }
+}
+.why-list { list-style: none; margin-top: 32px; }
+.why-list li {
+  display: flex; align-items: flex-start; gap: 16px; padding: 16px 0;
+  border-bottom: 1px solid rgba(168,185,154,0.2);
+}
+.why-list li:last-child { border-bottom: none; }
+.why-list .icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+.why-list h4 { font-family: 'Playfair Display', serif; font-weight: 500; font-size: 1.1rem; margin-bottom: 4px; }
+.why-list p { font-size: 0.9rem; }
+
+/* FEATURES */
+.features-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+}
+.feature-card {
+  background: rgba(239,230,213,0.5); border-radius: 20px; padding: 40px 32px;
+  backdrop-filter: blur(10px); border: 1px solid rgba(168,185,154,0.15);
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: default; position: relative; overflow: hidden;
+}
+.feature-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, #A8B99A, #B89B5E);
+  opacity: 0; transition: opacity 0.5s;
+}
+.feature-card:hover::before { opacity: 1; }
+.feature-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(48,64,46,0.08); background: rgba(239,230,213,0.8); }
+.feature-icon { font-size: 2.5rem; margin-bottom: 20px; display: block; }
+.feature-card h3 { margin-bottom: 12px; }
+.feature-card p { font-size: 0.9rem; }
+
+/* BOOK PREVIEW */
+.preview-carousel {
+  display: flex; gap: 24px; overflow-x: auto; padding: 20px 0 40px;
+  scroll-snap-type: x mandatory; -ms-overflow-style: none; scrollbar-width: none;
+  cursor: grab;
+}
+.preview-carousel::-webkit-scrollbar { display: none; }
+.preview-page {
+  flex: 0 0 280px; scroll-snap-align: start; border-radius: 16px;
+  overflow: hidden; position: relative;
+  aspect-ratio: 3/4; background: linear-gradient(135deg, #EFE6D5, #e4d9c4);
+  transition: transform 0.5s, box-shadow 0.5s;
+}
+.preview-page:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 20px 40px rgba(48,64,46,0.1); }
+.preview-page-inner {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 32px;
+  text-align: center;
+}
+.preview-page-inner .page-num {
+  font-family: 'Playfair Display', serif; font-size: 3rem; color: #B89B5E; margin-bottom: 12px;
+}
+.preview-page-inner p { font-size: 0.85rem; }
+.preview-page:nth-child(2) .preview-page-inner { background: linear-gradient(135deg, rgba(168,185,154,0.15), rgba(239,230,213,0.5)); }
+.preview-page:nth-child(3) .preview-page-inner { background: linear-gradient(135deg, rgba(184,155,94,0.1), rgba(239,230,213,0.5)); }
+.preview-page:nth-child(4) .preview-page-inner { background: linear-gradient(135deg, rgba(107,123,77,0.1), rgba(239,230,213,0.5)); }
+
+/* INSIDE THE BOOK - Timeline */
+.timeline { position: relative; padding-left: 40px; }
+.timeline::before {
+  content: ''; position: absolute; left: 12px; top: 0; bottom: 0; width: 1.5px;
+  background: linear-gradient(180deg, #A8B99A, transparent);
+}
+.timeline-item {
+  position: relative; padding: 24px 0 24px 32px; opacity: 0; transform: translateX(-20px);
+}
+.timeline-item::before {
+  content: ''; position: absolute; left: -34px; top: 30px; width: 10px; height: 10px;
+  border-radius: 50%; background: #A8B99A; border: 2px solid #F8F4EC;
+}
+.timeline-item .time-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+.timeline-item h3 { margin-bottom: 6px; }
+.timeline-item p { font-size: 0.9rem; color: #6B7B4D; }
+
+/* INGREDIENTS */
+.ingredients-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 20px;
+}
+.ingredient-card {
+  background: rgba(239,230,213,0.4); border-radius: 16px; padding: 24px 16px;
+  text-align: center; border: 1px solid rgba(168,185,154,0.1);
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: default;
+}
+.ingredient-card:hover { transform: translateY(-6px) scale(1.05); background: rgba(239,230,213,0.7); box-shadow: 0 12px 32px rgba(48,64,46,0.06); }
+.ingredient-icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+.ingredient-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 500; }
+.ingredient-sub { font-size: 0.75rem; color: #A8B99A; margin-top: 4px; }
+
+/* STATISTICS */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; text-align: center;
+}
+.stat-number {
+  font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 4vw, 4rem);
+  font-weight: 600; color: #30402E; line-height: 1;
+}
+.stat-label { font-size: 0.85rem; color: #6B7B4D; margin-top: 8px; }
+.stat-suffix { font-size: 0.5em; vertical-align: super; color: #B89B5E; }
+
+/* TESTIMONIALS */
+.testimonials-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+}
+.testimonial-card {
+  background: rgba(239,230,213,0.4); border-radius: 20px; padding: 36px;
+  border: 1px solid rgba(168,185,154,0.1);
+  transition: all 0.5s;
+}
+.testimonial-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(48,64,46,0.06); }
+.testimonial-stars { color: #B89B5E; font-size: 0.9rem; margin-bottom: 16px; letter-spacing: 2px; }
+.testimonial-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; margin-bottom: 20px; line-height: 1.7; }
+.testimonial-author { display: flex; align-items: center; gap: 12px; }
+.testimonial-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, #A8B99A, #6B7B4D);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-size: 1rem; color: #F8F4EC; font-weight: 500;
+}
+.testimonial-name { font-size: 0.9rem; font-weight: 500; }
+.testimonial-role { font-size: 0.75rem; color: #A8B99A; }
+
+/* FAQ */
+.faq-list { max-width: 720px; margin: 0 auto; }
+.faq-item {
+  border-bottom: 1px solid rgba(168,185,154,0.2); overflow: hidden;
+}
+.faq-question {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 0; cursor: pointer; background: none; border: none;
+  width: 100%; text-align: left;
+  font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 500;
+  color: #30402E; transition: color 0.3s;
+}
+.faq-question:hover { color: #6B7B4D; }
+.faq-question .faq-toggle {
+  width: 24px; height: 24px; position: relative; flex-shrink: 0; margin-left: 16px;
+}
+.faq-question .faq-toggle::before,
+.faq-question .faq-toggle::after {
+  content: ''; position: absolute; background: #6B7B4D; border-radius: 2px;
+  transition: transform 0.4s;
+}
+.faq-question .faq-toggle::before { width: 2px; height: 16px; top: 4px; left: 11px; }
+.faq-question .faq-toggle::after { width: 16px; height: 2px; top: 11px; left: 4px; }
+.faq-item.active .faq-toggle::before { transform: rotate(90deg); }
+.faq-answer {
+  max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.faq-answer-inner { padding: 0 0 20px; font-size: 0.95rem; color: #6B7B4D; }
+
+/* CTA */
+.cta-section {
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, #30402E, #3d5139);
+  color: #F8F4EC; text-align: center;
+}
+.cta-section::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(168,185,154,0.15) 0%, transparent 60%);
+}
+.cta-section h2 { color: #F8F4EC; }
+.cta-section p { color: rgba(248,244,236,0.7); }
+.cta-section .btn-primary {
+  background: #B89B5E; color: #F8F4EC;
+}
+.cta-section .btn-primary:hover { background: #a88b4e; box-shadow: 0 12px 32px rgba(184,155,94,0.3); }
+.cta-section .btn-secondary {
+  border-color: rgba(168,185,154,0.4); color: #A8B99A;
+}
+.cta-section .btn-secondary:hover { background: rgba(168,185,154,0.15); border-color: #A8B99A; }
+
+/* FOOTER */
+footer {
+  padding: 60px 24px 32px; border-top: 1px solid rgba(168,185,154,0.15);
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; max-width: 1200px; margin: 0 auto;
+}
+.footer-brand { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; margin-bottom: 8px; }
+.footer-desc { font-size: 0.85rem; color: #6B7B4D; max-width: 300px; }
+.footer-col h4 { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #A8B99A; margin-bottom: 16px; }
+.footer-col a {
+  display: block; font-size: 0.85rem; color: #6B7B4D; padding: 4px 0;
+  transition: color 0.3s;
+}
+.footer-col a:hover { color: #30402E; }
+.footer-bottom {
+  max-width: 1200px; margin: 40px auto 0; padding-top: 20px;
+  border-top: 1px solid rgba(168,185,154,0.1);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.8rem; color: #A8B99A;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(248,244,236,0.98); backdrop-filter: blur(20px); padding: 20px 32px; gap: 20px; }
+  .nav-toggle { display: flex; }
+  #book-canvas-wrap { width: 240px; height: 320px; }
+  .hero-content h1 { font-size: 2.4rem; }
+  .why-grid { grid-template-columns: 1fr; gap: 40px; }
+  .why-visual { aspect-ratio: 3/2; }
+  .features-grid { grid-template-columns: 1fr; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .stats-grid { gap: 24px; }
+  .section { padding: 80px 0; }
+  .preview-page { flex: 0 0 220px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  .hero { padding: 100px 24px 40px; }
+}
+@media (max-width: 480px) {
+  #book-canvas-wrap { width: 180px; height: 250px; }
+  .hero-content h1 { font-size: 2rem; }
+  .hero-content p { font-size: 0.95rem; }
+  .btn { padding: 14px 28px; font-size: 0.9rem; }
+  .hero-buttons { flex-direction: column; align-items: center; }
+  .ingredients-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+
+/* REVEAL ANIMATIONS */
+.reveal { opacity: 0; transform: translateY(30px); will-change: transform, opacity; }
+.reveal-left { opacity: 0; transform: translateX(-40px); will-change: transform, opacity; }
+.reveal-right { opacity: 0; transform: translateX(40px); will-change: transform, opacity; }
+.reveal-scale { opacity: 0; transform: scale(0.92); will-change: transform, opacity; }
+
+/* SCROLL INDICATOR IN HERO */
+.scroll-mouse {
+  width: 24px; height: 38px; border: 1.5px solid rgba(107,123,77,0.3); border-radius: 12px;
+  position: relative; display: flex; justify-content: center;
+}
+.scroll-mouse::before {
+  content: ''; width: 2px; height: 10px; background: #A8B99A; border-radius: 2px;
+  position: absolute; top: 8px;
+  animation: mouseScroll 2s ease-in-out infinite;
+}
+@keyframes mouseScroll {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(12px); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<nav id="nav">
+  <div class="nav-logo">✦ Grandma's Kitchen</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#why">About</a></li>
+    <li><a href="#features">Remedies</a></li>
+    <li><a href="#preview">Preview</a></li>
+    <li><a href="#ingredients">Ingredients</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#cta" class="btn btn-primary nav-cta">Get the Book</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-sunlight"></div>
+  <div class="hero-bg" style="background: radial-gradient(ellipse at 50% 80%, rgba(168,185,154,0.08) 0%, transparent 50%);"></div>
+
+  <div id="book-canvas-wrap"></div>
+
+  <div class="hero-content">
+    <p class="subtitle">Traditional Wisdom for Modern Wellness</p>
+    <h1 id="hero-title">
+      <span class="line">Grandma's</span>
+      <span class="line">Kitchen</span>
+    </h1>
+    <p>Discover timeless herbal remedies, healing recipes, comforting traditions, and natural wellness secrets lovingly passed down through generations.</p>
+    <div class="hero-buttons">
+      <button class="btn btn-primary magnetic-btn">Explore the Book →</button>
+      <button class="btn btn-secondary magnetic-btn">Discover Natural Healing</button>
+    </div>
+  </div>
+
+  <div class="hero-scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="container">
+    <div class="why-grid">
+      <div class="why-visual reveal-left">
+        <div class="why-visual-inner">
+          <span class="herb-icon">🌿</span>
+          <span class="herb-icon">🍃</span>
+          <span class="herb-icon">🌾</span>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <p class="section-label">Why Grandma's Kitchen</p>
+        <h2 class="section-title">Healing Begins<br>At Home</h2>
+        <p class="section-desc" style="margin-bottom: 20px;">For generations, grandmothers have been the keepers of natural healing wisdom. In every kitchen, there exists a pharmacy of herbs, spices, and wholesome ingredients waiting to nurture and heal.</p>
+        <ul class="why-list">
+          <li>
+            <span class="icon">🌱</span>
+            <div>
+              <h4>Traditional Remedies</h4>
+              <p>Time-tested natural cures using herbs and spices found in every pantry.</p>
+            </div>
+          </li>
+          <li>
+            <span class="icon">🥣</span>
+            <div>
+              <h4>Healing Foods</h4>
+              <p>Nourishing recipes that strengthen immunity and restore vitality.</p>
+            </div>
+          </li>
+          <li>
+            <span class="icon">💚</span>
+            <div>
+              <h4>Kitchen Medicine</h4>
+              <p>Simple, powerful remedies made from ingredients you already have at home.</p>
+            </div>
+          </li>
+          <li>
+            <span class="icon">📖</span>
+            <div>
+              <h4>Family Wisdom</h4>
+              <p>Generational knowledge preserved and passed down with love and care.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features" style="background: rgba(168,185,154,0.04);">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <p class="section-label">Premium Remedies</p>
+      <h2 class="section-title">Nature's Medicine Chest</h2>
+      <p class="section-desc" style="margin:0 auto 60px;">Every page holds a treasure of natural wisdom, carefully curated from generations of family healing traditions.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card" data-delay="0">
+        <span class="feature-icon">🌿</span>
+        <h3>Herbal Remedies</h3>
+        <p>Discover potent herbal formulations for common ailments, from soothing teas to healing tinctures.</p>
+      </div>
+      <div class="feature-card" data-delay="0.1">
+        <span class="feature-icon">🍵</span>
+        <h3>Healing Teas</h3>
+        <p>Warm, comforting tea recipes infused with medicinal herbs to calm, heal, and restore balance.</p>
+      </div>
+      <div class="feature-card" data-delay="0.2">
+        <span class="feature-icon">🥣</span>
+        <h3>Nourishing Recipes</h3>
+        <p>Wholesome meals designed to heal from within, using traditional ingredients and time-honored methods.</p>
+      </div>
+      <div class="feature-card" data-delay="0.1">
+        <span class="feature-icon">🧄</span>
+        <h3>Immune Support</h3>
+        <p>Powerful natural protocols to strengthen your family's immunity through every season.</p>
+      </div>
+      <div class="feature-card" data-delay="0.2">
+        <span class="feature-icon">🌼</span>
+        <h3>Traditional Wellness</h3>
+        <p>Ancient wellness practices adapted for modern life, bringing balance to body and mind.</p>
+      </div>
+      <div class="feature-card" data-delay="0.3">
+        <span class="feature-icon">🍯</span>
+        <h3>Natural Ingredients</h3>
+        <p>Understanding the healing properties of everyday kitchen staples and wild herbs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="preview">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <p class="section-label">Inside the Book</p>
+      <h2 class="section-title">A Glimpse Within</h2>
+      <p class="section-desc" style="margin:0 auto 40px;">Beautifully crafted pages filled with wisdom, recipes, and natural remedies.</p>
+    </div>
+    <div class="preview-carousel" id="previewCarousel">
+      <div class="preview-page" data-delay="0">
+        <div class="preview-page-inner">
+          <div class="page-num">01</div>
+          <h3 style="margin-bottom:8px;">Morning Rituals</h3>
+          <p>Start your day with healing teas and gentle remedies that nurture body and soul.</p>
+        </div>
+      </div>
+      <div class="preview-page" data-delay="0.1">
+        <div class="preview-page-inner">
+          <div class="page-num">02</div>
+          <h3 style="margin-bottom:8px;">Herbal Apothecary</h3>
+          <p>A comprehensive guide to medicinal herbs and their traditional applications.</p>
+        </div>
+      </div>
+      <div class="preview-page" data-delay="0.2">
+        <div class="preview-page-inner">
+          <div class="page-num">03</div>
+          <h3 style="margin-bottom:8px;">Healing Broths</h3>
+          <p>Nourishing bone broths and herbal soups that restore vitality from within.</p>
+        </div>
+      </div>
+      <div class="preview-page" data-delay="0.3">
+        <div class="preview-page-inner">
+          <div class="page-num">04</div>
+          <h3 style="margin-bottom:8px;">Kitchen Cures</h3>
+          <p>Simple remedies for common ailments using ingredients from your pantry.</p>
+        </div>
+      </div>
+      <div class="preview-page" data-delay="0.4">
+        <div class="preview-page-inner">
+          <div class="page-num">05</div>
+          <h3 style="margin-bottom:8px;">Seasonal Wisdom</h3>
+          <p>Traditional knowledge for staying healthy through every changing season.</p>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:20px;">
+      <button class="btn btn-primary magnetic-btn">View Full Preview →</button>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="inside" style="background: rgba(168,185,154,0.04);">
+  <div class="container">
+    <div class="reveal" style="text-align:center;margin-bottom:60px;">
+      <p class="section-label">Journey Through</p>
+      <h2 class="section-title">Inside the Book</h2>
+    </div>
+    <div class="timeline" id="timeline">
+      <div class="timeline-item" data-delay="0">
+        <span class="time-icon">🌅</span>
+        <h3>Morning Remedies</h3>
+        <p>Gentle herbal infusions and rituals to awaken the body and calm the mind, starting each day with intention.</p>
+      </div>
+      <div class="timeline-item" data-delay="0.15">
+        <span class="time-icon">🍵</span>
+        <h3>Healing Drinks</h3>
+        <p>Warm elixirs and restorative beverages crafted from grandmother's most cherished recipes.</p>
+      </div>
+      <div class="timeline-item" data-delay="0.3">
+        <span class="time-icon">🛡️</span>
+        <h3>Immune Boosters</h3>
+        <p>Powerful natural protocols to strengthen your family's defenses through every season.</p>
+      </div>
+      <div class="timeline-item" data-delay="0.45">
+        <span class="time-icon">📜</span>
+        <h3>Traditional Recipes</h3>
+        <p>Time-honored dishes passed down through generations, each with its own healing story.</p>
+      </div>
+      <div class="timeline-item" data-delay="0.6">
+        <span class="time-icon">🌿</span>
+        <h3>Herbal Ingredients</h3>
+        <p>Understanding the profound healing properties hidden in everyday kitchen staples.</p>
+      </div>
+      <div class="timeline-item" data-delay="0.75">
+        <span class="time-icon">💚</span>
+        <h3>Natural Wellness Tips</h3>
+        <p>Simple daily practices and ancient wisdom for maintaining vibrant health naturally.</p>
+      </div>
+      <div class="timeline-item" data-delay="0.9">
+        <span class="time-icon">🏠</span>
+        <h3>Kitchen Remedies</h3>
+        <p>Transform your kitchen into a natural pharmacy with remedies made from everyday ingredients.</p>
+      </div>
+      <div class="timeline-item" data-delay="1.05">
+        <span class="time-icon">✨</span>
+        <h3>Daily Healing Habits</h3>
+        <p>Small, consistent practices that create lasting wellness and deeper connection to natural living.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="ingredients">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <p class="section-label">Natural Pharmacy</p>
+      <h2 class="section-title">Herbal Ingredients</h2>
+      <p class="section-desc" style="margin:0 auto 60px;">Nature's most powerful healing ingredients, each with a story and purpose in traditional medicine.</p>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingredient-card" data-delay="0"><span class="ingredient-icon">🟡</span><div class="ingredient-name">Turmeric</div><div class="ingredient-sub">Anti-inflammatory</div></div>
+      <div class="ingredient-card" data-delay="0.05"><span class="ingredient-icon">🫚</span><div class="ingredient-name">Ginger</div><div class="ingredient-sub">Digestive Aid</div></div>
+      <div class="ingredient-card" data-delay="0.1"><span class="ingredient-icon">🧄</span><div class="ingredient-name">Garlic</div><div class="ingredient-sub">Immune Shield</div></div>
+      <div class="ingredient-card" data-delay="0.15"><span class="ingredient-icon">🍋</span><div class="ingredient-name">Lemon</div><div class="ingredient-sub">Vitamin C</div></div>
+      <div class="ingredient-card" data-delay="0.2"><span class="ingredient-icon">🍯</span><div class="ingredient-name">Honey</div><div class="ingredient-sub">Natural Healer</div></div>
+      <div class="ingredient-card" data-delay="0.25"><span class="ingredient-icon">🟫</span><div class="ingredient-name">Cinnamon</div><div class="ingredient-sub">Warming Spice</div></div>
+      <div class="ingredient-card" data-delay="0.3"><span class="ingredient-icon">🌿</span><div class="ingredient-name">Moringa</div><div class="ingredient-sub">Nutrient Dense</div></div>
+      <div class="ingredient-card" data-delay="0.35"><span class="ingredient-icon">🌱</span><div class="ingredient-name">Peppermint</div><div class="ingredient-sub">Calming Herb</div></div>
+      <div class="ingredient-card" data-delay="0.4"><span class="ingredient-icon">🌼</span><div class="ingredient-name">Chamomile</div><div class="ingredient-sub">Peaceful Sleep</div></div>
+      <div class="ingredient-card" data-delay="0.45"><span class="ingredient-icon">🌵</span><div class="ingredient-name">Aloe Vera</div><div class="ingredient-sub">Healing Balm</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="stats" style="background: rgba(168,185,154,0.04);">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="reveal" data-delay="0">
+        <div class="stat-number"><span class="stat-count" data-target="500">0</span><span class="stat-suffix">+</span></div>
+        <div class="stat-label">Natural Remedies</div>
+      </div>
+      <div class="reveal" data-delay="0.15">
+        <div class="stat-number"><span class="stat-count" data-target="120">0</span><span class="stat-suffix">+</span></div>
+        <div class="stat-label">Healing Recipes</div>
+      </div>
+      <div class="reveal" data-delay="0.3">
+        <div class="stat-number"><span class="stat-count" data-target="50">0</span><span class="stat-suffix">+</span></div>
+        <div class="stat-label">Herbal Ingredients</div>
+      </div>
+      <div class="reveal" data-delay="0.45">
+        <div class="stat-number"><span class="stat-count" data-target="15">0</span><span class="stat-suffix">k+</span></div>
+        <div class="stat-label">Happy Readers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="testimonials">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <p class="section-label">Reader Love</p>
+      <h2 class="section-title">Kind Words</h2>
+      <p class="section-desc" style="margin:0 auto 60px;">Hear from those who have brought Grandma's healing wisdom into their homes.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card" data-delay="0">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"This book brought tears to my eyes. It feels like my own grandmother is right there in the kitchen with me, showing me how to make the remedies she used to make. A true treasure."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">M</div>
+          <div>
+            <div class="testimonial-name">Margaret Chen</div>
+            <div class="testimonial-role">Verified Reader</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card" data-delay="0.15">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"I've tried countless wellness books, but this one is different. The recipes actually work, the ingredients are simple to find, and the wisdom feels authentic. My family has noticed a real difference."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">J</div>
+          <div>
+            <div class="testimonial-name">James Okafor</div>
+            <div class="testimonial-role">Verified Reader</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card" data-delay="0.3">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"The herbal remedy section alone is worth the price. I've been able to treat common colds, upset stomachs, and even skin issues using ingredients I already had in my kitchen. Absolutely wonderful."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">S</div>
+          <div>
+            <div class="testimonial-name">Sarah Mitchell</div>
+            <div class="testimonial-role">Verified Reader</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq" style="background: rgba(168,185,154,0.04);">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <p class="section-label">Questions</p>
+      <h2 class="section-title">Frequently Asked</h2>
+    </div>
+    <div class="faq-list" id="faqList">
+      <div class="faq-item reveal" data-delay="0">
+        <button class="faq-question">What makes this book different from other herbal remedy books?<span class="faq-toggle"></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Grandma's Kitchen is more than a recipe collection—it's a living record of generational wisdom. Every remedy has been lovingly gathered from grandmothers around the world, tested in real kitchens, and presented with the warmth and care of a family heirloom.</div></div>
+      </div>
+      <div class="faq-item reveal" data-delay="0.1">
+        <button class="faq-question">Are the ingredients easy to find?<span class="faq-toggle"></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Absolutely. One of the core principles of this book is accessibility. Most ingredients are common kitchen staples or can be found at your local grocery store or farmer's market. No exotic or hard-to-find items required.</div></div>
+      </div>
+      <div class="faq-item reveal" data-delay="0.2">
+        <button class="faq-question">Is this book suitable for beginners?<span class="faq-toggle"></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Yes! Whether you're new to herbal remedies or have been practicing natural wellness for years, you'll find something valuable. Each recipe includes clear instructions, background on the ingredients, and the traditional wisdom behind it.</div></div>
+      </div>
+      <div class="faq-item reveal" data-delay="0.3">
+        <button class="faq-question">How is the book delivered?<span class="faq-toggle"></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">The book is available as a beautifully formatted digital download (PDF) that works on all devices—phone, tablet, computer, or e-reader. You'll receive instant access upon purchase.</div></div>
+      </div>
+      <div class="faq-item reveal" data-delay="0.4">
+        <button class="faq-question">Can I share these recipes with my family?<span class="faq-toggle"></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">The recipes and remedies in this book were made to be shared, just as grandmothers have always done. We encourage you to cook, heal, and pass this wisdom forward to your loved ones.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section cta-section" id="cta">
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="reveal">
+      <p class="section-label" style="color:rgba(168,185,154,0.7);">Begin Your Journey</p>
+      <h2 class="section-title" style="max-width:600px;margin:0 auto 16px;">Bring Grandma's Healing Wisdom Into Your Home</h2>
+      <p style="margin-bottom:40px;color:rgba(248,244,236,0.6);max-width:500px;margin-left:auto;margin-right:auto;">Join thousands of families who have rediscovered the power of natural healing through traditional kitchen remedies.</p>
+      <div class="hero-buttons" style="justify-content:center;">
+        <button class="btn btn-primary magnetic-btn">Get Instant Access →</button>
+        <button class="btn btn-secondary magnetic-btn">Learn More</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">✦ Grandma's Kitchen</div>
+      <p class="footer-desc">Preserving traditional healing wisdom and natural remedies, lovingly passed down through generations of grandmothers.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <a href="#why">About</a>
+      <a href="#features">Remedies</a>
+      <a href="#preview">Preview</a>
+      <a href="#ingredients">Ingredients</a>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="#">Contact Us</a>
+      <a href="#">Shipping</a>
+      <a href="#faq">FAQ</a>
+      <a href="#">Returns</a>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <a href="#">Instagram</a>
+      <a href="#">Facebook</a>
+      <a href="#">Pinterest</a>
+      <a href="#">Newsletter</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Grandma's Kitchen. All rights reserved.</span>
+    <span>Crafted with natural wisdom and care ✦</span>
+  </div>
+</footer>
+
+<script>
+// ===== LENIS SMOOTH SCROLL =====
+const lenis = new Lenis({
+  duration: 1.4,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  orientation: 'vertical',
+  smoothWheel: true,
+  wheelMultiplier: 1,
+  touchMultiplier: 1.5,
+});
+
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+
+lenis.on('scroll', ScrollTrigger.update);
+gsap.registerPlugin(ScrollTrigger);
+gsap.ticker.add((time) => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
+
+// ===== NAV SCROLL EFFECT =====
+const nav = document.getElementById('nav');
+lenis.on('scroll', (e) => {
+  nav.classList.toggle('scrolled', e.scroll > 60);
+});
+
+// ===== NAV TOGGLE =====
+document.getElementById('navToggle').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+  });
+});
+
+// ===== THREE.JS 3D BOOK =====
+(function initBook() {
+  const container = document.getElementById('book-canvas-wrap');
+  if (!container) return;
+
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+
+  const scene = new THREE.Scene();
+
+  const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+  camera.position.set(0, 0.3, 7.5);
+  camera.lookAt(0, 0, 0);
+
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: true,
+  });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.9;
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  container.appendChild(renderer.domElement);
+
+  // Lights
+  const ambient = new THREE.AmbientLight(0xffeedd, 0.5);
+  scene.add(ambient);
+
+  const hemi = new THREE.HemisphereLight(0xffeedd, 0x8b7355, 0.7);
+  scene.add(hemi);
+
+  const key = new THREE.DirectionalLight(0xfff0e0, 1.0);
+  key.position.set(4, 8, 6);
+  key.castShadow = true;
+  key.shadow.mapSize.width = 1024;
+  key.shadow.mapSize.height = 1024;
+  scene.add(key);
+
+  const fill = new THREE.DirectionalLight(0xccbbaa, 0.4);
+  fill.position.set(-4, 2, -4);
+  scene.add(fill);
+
+  const rim = new THREE.DirectionalLight(0xffffff, 0.3);
+  rim.position.set(0, -2, -5);
+  scene.add(rim);
+
+  // Book Group
+  const bookGroup = new THREE.Group();
+  scene.add(bookGroup);
+
+  // Texture loader
+  const loader = new THREE.TextureLoader();
+  const coverTex = loader.load('ina.png');
+
+  // Page texture
+  function makePageTex() {
+    const c = document.createElement('canvas');
+    c.width = 512; c.height = 512;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#f5f0e6';
+    ctx.fillRect(0, 0, 512, 512);
+    for (let i = 0; i < 40; i++) {
+      ctx.strokeStyle = `rgba(200,190,175,${Math.random() * 0.2})`;
+      ctx.lineWidth = Math.random() * 1.5 + 0.5;
+      ctx.beginPath();
+      ctx.moveTo(Math.random() * 512, 0);
+      ctx.lineTo(Math.random() * 512, 512);
+      ctx.stroke();
+    }
+    return new THREE.CanvasTexture(c);
+  }
+  const pageTex = makePageTex();
+
+  // Materials
+  const matCover = new THREE.MeshStandardMaterial({
+    map: coverTex,
+    roughness: 0.35,
+    metalness: 0.05,
+    side: THREE.DoubleSide,
+  });
+  const matBack = new THREE.MeshStandardMaterial({
+    color: 0x5a6b4d,
+    roughness: 0.6,
+    metalness: 0.0,
+  });
+  const matPages = new THREE.MeshStandardMaterial({
+    map: pageTex,
+    roughness: 0.7,
+    metalness: 0.0,
+  });
+  const matSpine = new THREE.MeshStandardMaterial({
+    color: 0x4a5b3d,
+    roughness: 0.7,
+    metalness: 0.0,
+  });
+  const matTopBottom = new THREE.MeshStandardMaterial({
+    map: pageTex,
+    roughness: 0.8,
+    metalness: 0.0,
+  });
+
+  // Book dimensions
+  const bw = 3.0, bh = 4.2, bd = 0.55;
+
+  const materials = [matSpine, matPages, matTopBottom, matTopBottom, matCover, matBack];
+  const geo = new THREE.BoxGeometry(bw, bh, bd);
+  const mesh = new THREE.Mesh(geo, materials);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  bookGroup.add(mesh);
+
+  // Subtle edge glow
+  const edgeGeo = new THREE.BoxGeometry(bw * 1.01, bh * 1.01, bd * 1.01);
+  const edgeMat = new THREE.MeshBasicMaterial({
+    color: 0xA8B99A,
+    transparent: true,
+    opacity: 0.06,
+    wireframe: true,
+  });
+  const edgeMesh = new THREE.Mesh(edgeGeo, edgeMat);
+  bookGroup.add(edgeMesh);
+
+  // Shadow
+  const shadowGeo = new THREE.CircleGeometry(2.2, 32);
+  const shadowMat = new THREE.MeshBasicMaterial({
+    color: 0x000000,
+    transparent: true,
+    opacity: 0.08,
+  });
+  const shadow = new THREE.Mesh(shadowGeo, shadowMat);
+  shadow.rotation.x = -Math.PI / 2;
+  shadow.position.y = -bh / 2 - 0.2;
+  bookGroup.add(shadow);
+
+  // ===== INTERACTION =====
+  let isDragging = false;
+  let prevX = 0, prevY = 0;
+  let dragVelX = 0, dragVelY = 0;
+  let momentumVX = 0, momentumVY = 0;
+  let targetRotY = 0, targetRotX = 0;
+  let currentRotY = 0, currentRotX = 0;
+  let isHovering = false;
+
+  let idleTime = 0;
+  let idleTargetY = 0;
+
+  gsap.to(bookGroup.position, {
+    y: 0.12,
+    duration: 3.5,
+    ease: 'sine.inOut',
+    yoyo: true,
+    repeat: -1,
+  });
+
+  function getPos(e) {
+    const rect = container.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    let x, y;
+    if (e.touches) {
+      x = e.touches[0].clientX - cx;
+      y = e.touches[0].clientY - cy;
+    } else {
+      x = e.clientX - cx;
+      y = e.clientY - cy;
+    }
+    return { x, y };
+  }
+
+  function onDown(e) {
+    isDragging = true;
+    const p = getPos(e);
+    prevX = p.x;
+    prevY = p.y;
+    dragVelX = 0;
+    dragVelY = 0;
+    momentumVX = 0;
+    momentumVY = 0;
+    e.preventDefault();
+  }
+
+  function onMove(e) {
+    if (!isDragging) {
+      const p = getPos(e);
+      const followX = p.x * 0.002;
+      const followY = p.y * 0.001;
+      gsap.to(bookGroup.rotation, {
+        y: currentRotY + followX * 0.3,
+        x: currentRotX - followY * 0.3,
+        duration: 0.8,
+        ease: 'power2.out',
+      });
+      return;
+    }
+    const p = getPos(e);
+    const dx = p.x - prevX;
+    const dy = p.y - prevY;
+    targetRotY += dx * 0.008;
+    targetRotX += dy * 0.004;
+    targetRotX = Math.max(-0.4, Math.min(0.4, targetRotX));
+    dragVelX = dy * 0.008;
+    dragVelY = dx * 0.008;
+    prevX = p.x;
+    prevY = p.y;
+    e.preventDefault();
+  }
+
+  function onUp() {
+    if (!isDragging) return;
+    isDragging = false;
+    momentumVX = dragVelX * 10;
+    momentumVY = dragVelY * 10;
+  }
+
+  // Mouse
+  container.addEventListener('mousedown', onDown);
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('mouseup', onUp);
+  container.addEventListener('mouseenter', () => { isHovering = true; });
+  container.addEventListener('mouseleave', () => { isHovering = false; });
+
+  // Touch
+  container.addEventListener('touchstart', onDown, { passive: false });
+  window.addEventListener('touchmove', onMove, { passive: false });
+  window.addEventListener('touchend', onUp);
+
+  // ===== ANIMATION LOOP =====
+  function animate() {
+    requestAnimationFrame(animate);
+    idleTime += 0.005;
+
+    if (isDragging) {
+      momentumVX = 0;
+      momentumVY = 0;
+    } else if (Math.abs(momentumVX) > 0.0001 || Math.abs(momentumVY) > 0.0001) {
+      targetRotY += momentumVY;
+      targetRotX += momentumVX;
+      targetRotX = Math.max(-0.4, Math.min(0.4, targetRotX));
+      momentumVX *= 0.96;
+      momentumVY *= 0.96;
+      if (Math.abs(momentumVX) < 0.0001) momentumVX = 0;
+      if (Math.abs(momentumVY) < 0.0001) momentumVY = 0;
+    } else if (!isDragging) {
+      idleTargetY = Math.sin(idleTime * 0.3) * 0.06;
+      targetRotY = idleTargetY;
+      targetRotX = Math.sin(idleTime * 0.15) * 0.02;
+    }
+
+    currentRotY += (targetRotY - currentRotY) * 0.06;
+    currentRotX += (targetRotX - currentRotX) * 0.06;
+    bookGroup.rotation.y = currentRotY;
+    bookGroup.rotation.x = currentRotX;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // ===== RESIZE =====
+  function onResize() {
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  }
+  window.addEventListener('resize', onResize);
+})();
+
+// ===== GSAP SCROLL ANIMATIONS =====
+document.addEventListener('DOMContentLoaded', () => {
+  // Hero reveal
+  const heroTitle = document.getElementById('hero-title');
+  if (heroTitle && typeof SplitType !== 'undefined') {
+    try {
+      const split = new SplitType(heroTitle, { types: 'lines' });
+      gsap.from(split.lines, {
+        y: 60,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.2,
+        ease: 'power4.out',
+        delay: 0.2,
+      });
+    } catch(e) {
+      gsap.from(heroTitle, { y: 40, opacity: 0, duration: 1, ease: 'power3.out', delay: 0.2 });
+    }
+  } else {
+    gsap.from(heroTitle, { y: 40, opacity: 0, duration: 1, ease: 'power3.out', delay: 0.2 });
+  }
+
+  gsap.from('.hero-content .subtitle', { y: 30, opacity: 0, duration: 1, delay: 0.3, ease: 'power3.out' });
+  gsap.from('.hero-content p', { y: 30, opacity: 0, duration: 1, delay: 0.5, ease: 'power3.out' });
+  gsap.from('.hero-buttons', { y: 30, opacity: 0, duration: 1, delay: 0.7, ease: 'power3.out' });
+
+  // Book entrance
+  gsap.from('#book-canvas-wrap', {
+    y: 40,
+    opacity: 0,
+    scale: 0.9,
+    duration: 1.4,
+    delay: 0.1,
+    ease: 'power4.out',
+  });
+
+  // === REVEAL ELEMENTS ON SCROLL ===
+  const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+  reveals.forEach((el) => {
+    const delay = parseFloat(el.dataset.delay) || 0;
+    gsap.to(el, {
+      y: 0,
+      x: 0,
+      scale: 1,
+      opacity: 1,
+      duration: 1.0,
+      ease: 'power3.out',
+      delay: delay,
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 88%',
+        toggleActions: 'play none none none',
+      },
+    });
+  });
+
+  // === TIMELINE ITEMS ===
+  gsap.utils.toArray('.timeline-item').forEach((item, i) => {
+    gsap.to(item, {
+      x: 0,
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power3.out',
+      delay: parseFloat(item.dataset.delay) || 0,
+      scrollTrigger: {
+        trigger: item,
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+      },
+    });
+  });
+
+  // === FEATURE CARDS ===
+  gsap.utils.toArray('.feature-card').forEach((card, i) => {
+    gsap.from(card, {
+      y: 40,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power3.out',
+      delay: (parseFloat(card.dataset.delay) || 0),
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 87%',
+        toggleActions: 'play none none none',
+      },
+    });
+  });
+
+  // === INGREDIENT CARDS ===
+  gsap.utils.toArray('.ingredient-card').forEach((card, i) => {
+    gsap.from(card, {
+      scale: 0.85,
+      opacity: 0,
+      duration: 0.6,
+      ease: 'back.out(1.4)',
+      delay: 0.05 * i,
+      scrollTrigger: {
+        trigger: '.ingredients-grid',
+        start: 'top 80%',
+        toggleActions: 'play none none none',
+      },
+    });
+  });
+
+  // === STAT COUNTERS ===
+  const counters = document.querySelectorAll('.stat-count');
+  counters.forEach((el) => {
+    const target = parseInt(el.dataset.target);
+    gsap.fromTo(el,
+      { textContent: 0 },
+      {
+        textContent: target,
+        duration: 2.2,
+        ease: 'power2.out',
+        snap: { textContent: 1 },
+        scrollTrigger: {
+          trigger: el.closest('.stats-grid'),
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      }
+    );
+  });
+
+  // === TESTIMONIAL CARDS ===
+  gsap.utils.toArray('.testimonial-card').forEach((card, i) => {
+    gsap.from(card, {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      delay: (parseFloat(card.dataset.delay) || 0),
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+      },
+    });
+  });
+
+  // === PREVIEW PAGES ===
+  gsap.utils.toArray('.preview-page').forEach((page, i) => {
+    gsap.from(page, {
+      scale: 0.9,
+      opacity: 0,
+      duration: 0.7,
+      delay: 0.1 * i,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '.preview-carousel',
+        start: 'top 80%',
+        toggleActions: 'play none none none',
+      },
+    });
+  });
+});
+
+// ===== FAQ ACCORDION =====
+document.querySelectorAll('.faq-question').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const answer = item.querySelector('.faq-answer');
+    const isOpen = item.classList.contains('active');
+
+    document.querySelectorAll('.faq-item.active').forEach(i => {
+      if (i !== item) {
+        i.classList.remove('active');
+        i.querySelector('.faq-answer').style.maxHeight = '0';
+      }
+    });
+
+    item.classList.toggle('active');
+    answer.style.maxHeight = isOpen ? '0' : answer.scrollHeight + 'px';
+  });
+});
+
+// ===== MAGNETIC BUTTONS =====
+document.querySelectorAll('.magnetic-btn').forEach(btn => {
+  btn.addEventListener('mousemove', (e) => {
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    gsap.to(btn, {
+      x: x * 0.2,
+      y: y * 0.2,
+      duration: 0.4,
+      ease: 'power2.out',
+    });
+  });
+  btn.addEventListener('mouseleave', () => {
+    gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.4)' });
+  });
+});
+
+// ===== FLOATING PARTICLES =====
+(function initParticles() {
+  const container = document.getElementById('particles');
+  const count = 20;
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'leaf-particle';
+    el.style.left = Math.random() * 100 + '%';
+    el.style.top = Math.random() * 100 + '%';
+    el.style.width = (10 + Math.random() * 16) + 'px';
+    el.style.height = (8 + Math.random() * 12) + 'px';
+    el.style.background = ['#A8B99A', '#B89B5E', '#6B7B4D', '#C4B89A'][Math.floor(Math.random() * 4)];
+    el.style.borderRadius = Math.random() > 0.5 ? '50% 0 50% 0' : '0 50% 0 50%';
+    el.style.opacity = 0.15 + Math.random() * 0.2;
+    el.style.animation = `floatParticle ${15 + Math.random() * 20}s linear infinite`;
+    el.style.animationDelay = -Math.random() * 30 + 's';
+    container.appendChild(el);
+  }
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes floatParticle {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0; }
+      10% { opacity: ${0.15 + Math.random() * 0.2}; }
+      90% { opacity: ${0.15 + Math.random() * 0.2}; }
+      100% { transform: translate(${60 + Math.random() * 80}px, ${-200 - Math.random() * 300}px) rotate(${180 + Math.random() * 360}deg) scale(0.5); opacity: 0; }
+    }
+  `;
+  container.appendChild(style);
+})();
+
+// ===== PARALLAX ON SCROLL (hero background) =====
+lenis.on('scroll', (e) => {
+  const scrollY = e.scroll;
+  const sunlight = document.querySelector('.hero-sunlight');
+  const bg = document.querySelector('.hero-bg');
+  if (sunlight) {
+    sunlight.style.transform = `translateX(-50%) translateY(${scrollY * 0.08}px)`;
+    sunlight.style.opacity = Math.max(0, 1 - scrollY / 500);
+  }
+  if (bg) {
+    bg.style.opacity = Math.max(0, 1 - scrollY / 800);
+  }
+});
+
+console.log('🥗 Grandma\'s Kitchen — Healing wisdom, beautifully served.');
+</script>
+</body>
+</html>
