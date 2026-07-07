@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grandma's Kitchen — 500 Recipes: 300 Desserts & 200 Snacks</title>
-<meta name="description" content="Discover 500 lovingly crafted recipes from Grandma's kitchen — 300 irresistible desserts and 200 delicious snacks passed down through generations.">
+<title>Grandma's Kitchen — 500 Recipes</title>
+<meta name="description" content="500 lovingly crafted recipes from Grandma's kitchen — 300 desserts and 200 snacks passed down through generations.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -19,10 +19,10 @@ html { scroll-behavior: auto; }
   --bg: #0C0B0A;
   --surface: #1A1513;
   --cream: #F5E5D2;
-  --gold: #BD6953;
-  --darkGold: #7E4028;
-  --bronze: #D3A979;
-  --glass: rgba(20, 19, 18, 0.7);
+  --terracotta: #BD6953;
+  --darkRust: #7E4028;
+  --tan: #D3A979;
+  --glass: rgba(26, 21, 19, 0.7);
   --glassBorder: rgba(189, 105, 83, 0.12);
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   --radius: 20px;
@@ -32,10 +32,10 @@ body {
   font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.6;
   overflow-x: hidden; -webkit-font-smoothing: antialiased;
 }
-::selection { background: var(--gold); color: var(--bg); }
+::selection { background: var(--terracotta); color: var(--bg); }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--darkGold); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--darkRust); border-radius: 3px; }
 
 h1, h2, h3, h4 {
   font-family: 'Playfair Display', serif; font-weight: 600;
@@ -44,7 +44,7 @@ h1, h2, h3, h4 {
 h1 { font-size: clamp(2.8rem, 6vw, 4.8rem); letter-spacing: -0.02em; }
 h2 { font-size: clamp(2rem, 4vw, 3.5rem); letter-spacing: -0.01em; }
 h3 { font-size: clamp(1.3rem, 2.2vw, 1.8rem); }
-p { font-size: clamp(0.95rem, 1.1vw, 1.1rem); color: rgba(245, 237, 224, 0.6); line-height: 1.7; }
+p { font-size: clamp(0.95rem, 1.1vw, 1.1rem); color: rgba(245, 229, 210, 0.6); line-height: 1.7; }
 a { text-decoration: none; color: inherit; }
 img { pointer-events: none; user-select: none; -webkit-user-drag: none; }
 
@@ -61,7 +61,7 @@ img { pointer-events: none; user-select: none; -webkit-user-drag: none; }
 .loader-book { width: 100px; height: 140px; position: relative; perspective: 800px; margin-bottom: 36px; }
 .loader-page {
   position: absolute; inset: 0;
-  background: linear-gradient(135deg, var(--gold), var(--darkGold), var(--bronze));
+  background: linear-gradient(135deg, var(--terracotta), var(--darkRust), var(--tan));
   border-radius: 4px; transform-origin: left center;
   animation: bookOpen 2s ease-in-out infinite;
   box-shadow: 0 0 40px rgba(189, 105, 83, 0.2);
@@ -73,18 +73,18 @@ img { pointer-events: none; user-select: none; -webkit-user-drag: none; }
   50% { transform: rotateY(-180deg) scaleX(0.8); }
   100% { transform: rotateY(-360deg) scaleX(1); }
 }
-.loader-text { font-size: 13px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); font-weight: 400; }
+.loader-text { font-size: 13px; letter-spacing: 5px; text-transform: uppercase; color: var(--terracotta); font-weight: 400; }
 .loader-bar { width: 200px; height: 1.5px; background: rgba(189, 105, 83, 0.1); border-radius: 2px; margin-top: 16px; position: relative; }
-.loader-progress { height: 100%; background: linear-gradient(90deg, var(--gold), var(--darkGold)); border-radius: 2px; width: 0%; transition: width 0.3s ease; }
+.loader-progress { height: 100%; background: linear-gradient(90deg, var(--terracotta), var(--darkRust)); border-radius: 2px; width: 0%; transition: width 0.3s ease; }
 
 /* SCROLL PROGRESS */
-#scrollProgress { position: fixed; top: 0; left: 0; height: 2px; background: linear-gradient(90deg, var(--gold), var(--darkGold)); z-index: 9999; width: 0%; transition: width 0.1s linear; }
+#scrollProgress { position: fixed; top: 0; left: 0; height: 2px; background: linear-gradient(90deg, var(--terracotta), var(--darkRust)); z-index: 9999; width: 0%; transition: width 0.1s linear; }
 
 /* NAV */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   padding: 20px 32px; display: flex; align-items: center; justify-content: space-between;
-  background: transparent; transition: all 0.5s;
+  transition: all 0.5s;
 }
 nav.scrolled {
   background: rgba(12, 11, 10, 0.9); backdrop-filter: blur(20px);
@@ -92,21 +92,21 @@ nav.scrolled {
   border-bottom: 1px solid var(--glassBorder);
 }
 .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; color: var(--cream); display: flex; align-items: center; gap: 8px; }
-.nav-logo span { color: var(--gold); }
+.nav-logo span { color: var(--terracotta); }
 .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
 .nav-links a {
-  font-size: 0.82rem; font-weight: 400; color: rgba(245, 237, 224, 0.6);
+  font-size: 0.82rem; font-weight: 400; color: rgba(245, 229, 210, 0.6);
   transition: color 0.3s; position: relative; letter-spacing: 0.3px;
 }
 .nav-links a::after {
   content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 1px;
-  background: var(--gold); transition: width 0.3s;
+  background: var(--terracotta); transition: width 0.3s;
 }
 .nav-links a:hover::after { width: 100%; }
 .nav-links a:hover { color: var(--cream); }
 .nav-cta {
   padding: 8px 20px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.5px;
-  background: linear-gradient(135deg, var(--gold), var(--darkGold)); color: var(--bg);
+  background: linear-gradient(135deg, var(--terracotta), var(--darkRust)); color: var(--bg);
   border-radius: 50px; text-transform: uppercase; transition: all 0.3s;
 }
 .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(189, 105, 83, 0.25); }
@@ -122,7 +122,7 @@ nav.scrolled {
   position: relative; overflow: hidden;
 }
 .btn-primary {
-  background: linear-gradient(135deg, var(--gold), var(--darkGold));
+  background: linear-gradient(135deg, var(--terracotta), var(--darkRust));
   color: var(--bg);
 }
 .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(189, 105, 83, 0.25); }
@@ -130,7 +130,7 @@ nav.scrolled {
   background: transparent; color: var(--cream);
   border: 1px solid rgba(189, 105, 83, 0.25);
 }
-.btn-secondary:hover { background: rgba(189, 105, 83, 0.08); border-color: var(--gold); transform: translateY(-3px); }
+.btn-secondary:hover { background: rgba(189, 105, 83, 0.08); border-color: var(--terracotta); transform: translateY(-3px); }
 
 /* HERO */
 .hero {
@@ -152,19 +152,17 @@ nav.scrolled {
   display: inline-flex; align-items: center; gap: 8px;
   background: rgba(189, 105, 83, 0.1); border: 1px solid rgba(189, 105, 83, 0.15);
   padding: 6px 16px; border-radius: 50px; font-size: 0.7rem; letter-spacing: 1px;
-  color: var(--gold); margin-bottom: 24px; text-transform: uppercase; font-weight: 500;
+  color: var(--terracotta); margin-bottom: 24px; text-transform: uppercase; font-weight: 500;
 }
 .hero-content h1 { margin-bottom: 6px; }
 .hero-content .subtitle {
   font-family: 'Playfair Display', serif; font-style: italic;
-  font-size: clamp(1rem, 1.6vw, 1.2rem); color: var(--gold); margin-bottom: 12px;
+  font-size: clamp(1rem, 1.6vw, 1.2rem); color: var(--terracotta); margin-bottom: 12px;
 }
-.hero-content p {
-  max-width: 480px; margin-bottom: 32px; line-height: 1.8;
-}
+.hero-content p { max-width: 480px; margin-bottom: 32px; line-height: 1.8; }
 .hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
 .hero-features { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 32px; }
-.hero-features span { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: rgba(245, 237, 224, 0.5); }
+.hero-features span { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: rgba(245, 229, 210, 0.5); }
 
 /* 3D BOOK WRAPPER */
 #book-canvas-wrap {
@@ -179,16 +177,14 @@ nav.scrolled {
 .section-head { text-align: center; margin-bottom: 60px; max-width: 700px; margin-left: auto; margin-right: auto; }
 .section-label {
   font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold);
+  text-transform: uppercase; letter-spacing: 0.15em; color: var(--terracotta);
   margin-bottom: 12px;
 }
 .section-title { margin-bottom: 16px; }
 .section-desc { max-width: 540px; margin: 0 auto 50px; text-align: center; }
 
 /* FEATURES */
-.features-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
-}
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .feature-card {
   background: var(--glass); backdrop-filter: blur(16px);
   border: 1px solid var(--glassBorder); border-radius: var(--radius);
@@ -197,7 +193,7 @@ nav.scrolled {
 }
 .feature-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--gold), var(--bronze));
+  background: linear-gradient(90deg, var(--terracotta), var(--tan));
   opacity: 0; transition: opacity 0.5s;
 }
 .feature-card:hover::before { opacity: 1; }
@@ -206,11 +202,11 @@ nav.scrolled {
 .feature-card h3 { margin-bottom: 8px; font-size: 1.2rem; }
 .feature-card p { font-size: 0.88rem; }
 
-/* INSIDE THE BOOK - Timeline */
+/* INSIDE THE BOOK */
 .timeline { position: relative; padding-left: 40px; }
 .timeline::before {
   content: ''; position: absolute; left: 12px; top: 0; bottom: 0; width: 1px;
-  background: linear-gradient(180deg, var(--gold), transparent);
+  background: linear-gradient(180deg, var(--terracotta), transparent);
 }
 .timeline-item {
   position: relative; padding: 20px 0 20px 32px;
@@ -218,7 +214,7 @@ nav.scrolled {
 }
 .timeline-item::before {
   content: ''; position: absolute; left: -34px; top: 26px; width: 8px; height: 8px;
-  border-radius: 50%; background: var(--gold); border: 2px solid var(--bg);
+  border-radius: 50%; background: var(--terracotta); border: 2px solid var(--bg);
 }
 .timeline-item .time-icon { font-size: 1.5rem; margin-bottom: 6px; display: block; }
 .timeline-item h3 { margin-bottom: 4px; font-size: 1.1rem; }
@@ -235,7 +231,7 @@ nav.scrolled {
   flex: 0 0 260px; scroll-snap-align: start; border-radius: 16px;
   overflow: hidden; position: relative;
   aspect-ratio: 3/4;
-  background: linear-gradient(135deg, rgba(189, 105, 83, 0.06), rgba(20, 19, 18, 0.8));
+  background: linear-gradient(135deg, rgba(189, 105, 83, 0.06), rgba(26, 21, 19, 0.8));
   border: 1px solid var(--glassBorder);
   transition: transform 0.5s, box-shadow 0.5s;
 }
@@ -246,55 +242,49 @@ nav.scrolled {
   text-align: center;
 }
 .preview-page-inner .page-num {
-  font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--gold); margin-bottom: 10px;
+  font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--terracotta); margin-bottom: 10px;
 }
 .preview-page-inner h3 { margin-bottom: 6px; font-size: 1.1rem; }
 .preview-page-inner p { font-size: 0.82rem; }
 
 /* INGREDIENTS */
-.ingredients-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 16px;
-}
+.ingredients-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 16px; }
 .ingredient-card {
-  background: rgba(20, 19, 18, 0.6); border-radius: 14px; padding: 20px 12px;
+  background: rgba(26, 21, 19, 0.6); border-radius: 14px; padding: 20px 12px;
   text-align: center; border: 1px solid var(--glassBorder);
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: default; backdrop-filter: blur(8px);
 }
-.ingredient-card:hover { transform: translateY(-6px) scale(1.05); background: rgba(20, 19, 18, 0.9); border-color: rgba(189, 105, 83, 0.2); box-shadow: var(--shadow); }
+.ingredient-card:hover { transform: translateY(-6px) scale(1.05); background: rgba(26, 21, 19, 0.9); border-color: rgba(189, 105, 83, 0.2); box-shadow: var(--shadow); }
 .ingredient-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
 .ingredient-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 500; color: var(--cream); }
 .ingredient-sub { font-size: 0.72rem; color: rgba(189, 105, 83, 0.6); margin-top: 4px; }
 
 /* STATISTICS */
-.stats-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; text-align: center;
-}
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; text-align: center; }
 .stat-number {
   font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 3.5vw, 3.5rem);
   font-weight: 700; color: var(--cream); line-height: 1;
-  background: linear-gradient(135deg, var(--gold), var(--cream));
+  background: linear-gradient(135deg, var(--terracotta), var(--cream));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.stat-label { font-size: 0.82rem; color: rgba(245, 237, 224, 0.5); margin-top: 8px; letter-spacing: 0.5px; }
+.stat-label { font-size: 0.82rem; color: rgba(245, 229, 210, 0.5); margin-top: 8px; letter-spacing: 0.5px; }
 
 /* TESTIMONIALS */
-.testimonials-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
-}
+.testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .testimonial-card {
   background: var(--glass); backdrop-filter: blur(16px);
   border: 1px solid var(--glassBorder); border-radius: var(--radius);
   padding: 32px; transition: all 0.5s;
 }
 .testimonial-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
-.testimonial-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 14px; letter-spacing: 2px; }
-.testimonial-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.95rem; margin-bottom: 18px; line-height: 1.7; color: rgba(245, 237, 224, 0.8); }
+.testimonial-stars { color: var(--terracotta); font-size: 0.85rem; margin-bottom: 14px; letter-spacing: 2px; }
+.testimonial-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.95rem; margin-bottom: 18px; line-height: 1.7; color: rgba(245, 229, 210, 0.8); }
 .testimonial-author { display: flex; align-items: center; gap: 12px; }
 .testimonial-avatar {
   width: 40px; height: 40px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold), var(--darkGold));
+  background: linear-gradient(135deg, var(--terracotta), var(--darkRust));
   display: flex; align-items: center; justify-content: center;
   font-family: 'Playfair Display', serif; font-size: 0.9rem; color: var(--bg); font-weight: 600;
 }
@@ -303,9 +293,7 @@ nav.scrolled {
 
 /* FAQ */
 .faq-list { max-width: 680px; margin: 0 auto; }
-.faq-item {
-  border-bottom: 1px solid rgba(189, 105, 83, 0.1); overflow: hidden;
-}
+.faq-item { border-bottom: 1px solid rgba(189, 105, 83, 0.1); overflow: hidden; }
 .faq-question {
   display: flex; align-items: center; justify-content: space-between;
   padding: 18px 0; cursor: pointer; background: none; border: none;
@@ -313,59 +301,42 @@ nav.scrolled {
   font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 500;
   color: var(--cream); transition: color 0.3s;
 }
-.faq-question:hover { color: var(--gold); }
-.faq-question .faq-toggle {
-  width: 20px; height: 20px; position: relative; flex-shrink: 0; margin-left: 16px;
-}
+.faq-question:hover { color: var(--terracotta); }
+.faq-question .faq-toggle { width: 20px; height: 20px; position: relative; flex-shrink: 0; margin-left: 16px; }
 .faq-question .faq-toggle::before,
 .faq-question .faq-toggle::after {
-  content: ''; position: absolute; background: var(--gold); border-radius: 2px;
+  content: ''; position: absolute; background: var(--terracotta); border-radius: 2px;
   transition: transform 0.4s;
 }
 .faq-question .faq-toggle::before { width: 2px; height: 14px; top: 3px; left: 9px; }
 .faq-question .faq-toggle::after { width: 14px; height: 2px; top: 9px; left: 3px; }
 .faq-item.active .faq-toggle::before { transform: rotate(90deg); }
-.faq-answer {
-  max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-.faq-answer-inner { padding: 0 0 18px; font-size: 0.9rem; color: rgba(245, 237, 224, 0.55); }
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.faq-answer-inner { padding: 0 0 18px; font-size: 0.9rem; color: rgba(245, 229, 210, 0.55); }
 
 /* CTA */
-.cta-section {
-  position: relative; overflow: hidden;
-  background: linear-gradient(135deg, #141312, #1a1816);
-  text-align: center;
-}
+.cta-section { position: relative; overflow: hidden; background: linear-gradient(135deg, #1A1513, #141110); text-align: center; }
 .cta-section::before {
   content: ''; position: absolute; inset: 0;
   background: radial-gradient(ellipse at 50% 0%, rgba(189, 105, 83, 0.1) 0%, transparent 60%);
 }
 .cta-section h2 { color: var(--cream); }
-.cta-section .btn-primary {
-  box-shadow: 0 12px 32px rgba(189, 105, 83, 0.2);
-}
+.cta-section .btn-primary { box-shadow: 0 12px 32px rgba(189, 105, 83, 0.2); }
 
 /* FOOTER */
-footer {
-  padding: 60px 24px 32px; border-top: 1px solid rgba(189, 105, 83, 0.08);
-}
-.footer-grid {
-  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; max-width: 1200px; margin: 0 auto;
-}
+footer { padding: 60px 24px 32px; border-top: 1px solid rgba(189, 105, 83, 0.08); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; max-width: 1200px; margin: 0 auto; }
 .footer-brand { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; margin-bottom: 8px; }
-.footer-brand span { color: var(--gold); }
-.footer-desc { font-size: 0.82rem; color: rgba(245, 237, 224, 0.4); max-width: 280px; line-height: 1.7; }
-.footer-col h4 { font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold); margin-bottom: 16px; }
-.footer-col a {
-  display: block; font-size: 0.82rem; color: rgba(245, 237, 224, 0.45); padding: 4px 0;
-  transition: color 0.3s;
-}
+.footer-brand span { color: var(--terracotta); }
+.footer-desc { font-size: 0.82rem; color: rgba(245, 229, 210, 0.4); max-width: 280px; line-height: 1.7; }
+.footer-col h4 { font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--terracotta); margin-bottom: 16px; }
+.footer-col a { display: block; font-size: 0.82rem; color: rgba(245, 229, 210, 0.45); padding: 4px 0; transition: color 0.3s; }
 .footer-col a:hover { color: var(--cream); }
 .footer-bottom {
   max-width: 1200px; margin: 40px auto 0; padding-top: 20px;
   border-top: 1px solid rgba(189, 105, 83, 0.06);
   display: flex; justify-content: space-between; align-items: center;
-  font-size: 0.78rem; color: rgba(245, 237, 224, 0.3);
+  font-size: 0.78rem; color: rgba(245, 229, 210, 0.3);
 }
 
 /* REVEAL */
@@ -443,12 +414,11 @@ footer {
 
 <section class="hero" id="hero">
   <div class="hero-bg"></div>
-
   <div class="hero-grid">
     <div class="hero-content">
-      <div class="hero-badge"><span class="stars">✦</span> 500 Generational Recipes</div>
+      <div class="hero-badge"><span>✦</span> 500 Generational Recipes</div>
       <p class="subtitle">From Grandma's Kitchen With Love</p>
-      <h1 id="hero-title">500<br>Grandma's Recipes</h1>
+      <h1>500<br>Grandma's Recipes</h1>
       <p>Discover 300 irresistible desserts and 200 delicious snacks — every recipe lovingly passed down through generations, perfected in Grandma's kitchen.</p>
       <div class="hero-buttons">
         <button class="btn btn-primary magnetic-btn">Explore the Book →</button>
@@ -460,12 +430,11 @@ footer {
         <span>✦ Generational Recipes</span>
       </div>
     </div>
-
     <div id="book-canvas-wrap"></div>
   </div>
 </section>
 
-<section class="section" id="why" style="background: rgba(20, 19, 18, 0.3);">
+<section class="section" id="why" style="background: rgba(26, 21, 19, 0.3);">
   <div class="container">
     <div class="section-head reveal">
       <p class="section-label">Why Grandma's Kitchen</p>
@@ -557,7 +526,7 @@ footer {
   </div>
 </section>
 
-<section class="section" id="inside" style="background: rgba(20, 19, 18, 0.3);">
+<section class="section" id="inside" style="background: rgba(26, 21, 19, 0.3);">
   <div class="container">
     <div class="section-head reveal">
       <p class="section-label">Journey Through</p>
@@ -625,7 +594,7 @@ footer {
   </div>
 </section>
 
-<section class="section" id="stats" style="background: rgba(20, 19, 18, 0.3);">
+<section class="section" id="stats" style="background: rgba(26, 21, 19, 0.3);">
   <div class="container">
     <div class="stats-grid">
       <div class="reveal" data-delay="0">
@@ -641,7 +610,7 @@ footer {
         <div class="stat-label">Snacks</div>
       </div>
       <div class="reveal" data-delay="0.45">
-        <div class="stat-number"><span class="stat-count" data-target="50">0</span><span style="font-size:0.5em;vertical-align:super;color:var(--gold);">+</span></div>
+        <div class="stat-number"><span class="stat-count" data-target="50">0</span><span style="font-size:0.5em;vertical-align:super;color:var(--terracotta);">+</span></div>
         <div class="stat-label">Years of Wisdom</div>
       </div>
     </div>
@@ -658,7 +627,7 @@ footer {
     <div class="testimonials-grid">
       <div class="testimonial-card" data-delay="0">
         <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"This cookbook feels like coming home. Every recipe I've tried tastes exactly like my own grandmother used to make. The chocolate cake recipe alone is worth the price!"</p>
+        <p class="testimonial-text">"This cookbook feels like coming home. Every recipe I've tried tastes exactly like my own grandmother used to make."</p>
         <div class="testimonial-author">
           <div class="testimonial-avatar">MC</div>
           <div>
@@ -669,7 +638,7 @@ footer {
       </div>
       <div class="testimonial-card" data-delay="0.15">
         <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"I've tried countless cookbooks, but this one is different. The desserts are incredible and the snacks are perfect for my kids' lunchboxes. Simple ingredients, amazing results."</p>
+        <p class="testimonial-text">"I've tried countless cookbooks, but this one is different. The desserts are incredible and the snacks are perfect for my kids' lunchboxes."</p>
         <div class="testimonial-author">
           <div class="testimonial-avatar">JO</div>
           <div>
@@ -680,7 +649,7 @@ footer {
       </div>
       <div class="testimonial-card" data-delay="0.3">
         <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"The snack section alone has transformed our family's baking. From crispy cookies to savory bites, every recipe is foolproof and absolutely delicious. Thank you, Grandma!"</p>
+        <p class="testimonial-text">"Every recipe is foolproof and absolutely delicious. The snack section alone has transformed our family's baking. Thank you, Grandma!"</p>
         <div class="testimonial-author">
           <div class="testimonial-avatar">SM</div>
           <div>
@@ -693,7 +662,7 @@ footer {
   </div>
 </section>
 
-<section class="section" id="faq" style="background: rgba(20, 19, 18, 0.3);">
+<section class="section" id="faq" style="background: rgba(26, 21, 19, 0.3);">
   <div class="container">
     <div class="section-head reveal">
       <p class="section-label">Questions</p>
@@ -701,24 +670,24 @@ footer {
     </div>
     <div class="faq-list" id="faqList">
       <div class="faq-item reveal" data-delay="0">
-        <button class="faq-question">What makes this cookbook different from others?<span class="faq-toggle"></span></button>
-        <div class="faq-answer"><div class="faq-answer-inner">Grandma's Kitchen is more than a recipe collection — it's a living record of generational baking wisdom. Every recipe has been lovingly gathered from grandmothers around the world, tested in real home kitchens, and presented with the warmth and care of a family heirloom.</div></div>
+        <button class="faq-question">What makes this cookbook different?<span class="faq-toggle"></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Grandma's Kitchen is a living record of generational baking wisdom. Every recipe has been lovingly gathered from grandmothers around the world and tested in real home kitchens.</div></div>
       </div>
       <div class="faq-item reveal" data-delay="0.1">
         <button class="faq-question">Are the ingredients easy to find?<span class="faq-toggle"></span></button>
-        <div class="faq-answer"><div class="faq-answer-inner">Absolutely. One of the core principles of this book is accessibility. Most ingredients are common kitchen staples or can be found at your local grocery store. No fancy or hard-to-find items required.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">Absolutely. Most ingredients are common kitchen staples or can be found at your local grocery store. No fancy or hard-to-find items required.</div></div>
       </div>
       <div class="faq-item reveal" data-delay="0.2">
-        <button class="faq-question">Is this book suitable for beginners?<span class="faq-toggle"></span></button>
-        <div class="faq-answer"><div class="faq-answer-inner">Yes! Whether you're a first-time baker or have been making treats for years, you'll find something valuable. Each recipe includes clear instructions, prep times, and the traditional wisdom behind it.</div></div>
+        <button class="faq-question">Is this suitable for beginners?<span class="faq-toggle"></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Yes! Each recipe includes clear instructions, prep times, and the traditional wisdom behind it.</div></div>
       </div>
       <div class="faq-item reveal" data-delay="0.3">
         <button class="faq-question">How is the book delivered?<span class="faq-toggle"></span></button>
-        <div class="faq-answer"><div class="faq-answer-inner">The book is available as a beautifully formatted digital download (PDF) that works on all devices — phone, tablet, computer, or e-reader. You'll receive instant access upon purchase.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">The book is available as a beautifully formatted digital download (PDF) that works on all devices.</div></div>
       </div>
       <div class="faq-item reveal" data-delay="0.4">
-        <button class="faq-question">Can I share these recipes with my family?<span class="faq-toggle"></span></button>
-        <div class="faq-answer"><div class="faq-answer-inner">These recipes were made to be shared, just as grandmothers have always done. We encourage you to bake, share, and pass this delicious wisdom forward to your loved ones.</div></div>
+        <button class="faq-question">Can I share these recipes?<span class="faq-toggle"></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">These recipes were made to be shared, just as grandmothers have always done. Bake, share, and pass this wisdom forward.</div></div>
       </div>
     </div>
   </div>
@@ -729,7 +698,7 @@ footer {
     <div class="reveal">
       <p class="section-label" style="color:rgba(189,105,83,0.5);">Begin Your Baking Journey</p>
       <h2 class="section-title" style="max-width:600px;margin:0 auto 16px;">Bring Grandma's Sweetest Recipes Into Your Kitchen</h2>
-      <p style="margin-bottom:36px;color:rgba(245,237,224,0.5);max-width:480px;margin-left:auto;margin-right:auto;">Join thousands of families who have rediscovered the joy of homemade desserts and snacks made with love.</p>
+      <p style="margin-bottom:36px;color:rgba(245,229,210,0.5);max-width:480px;margin-left:auto;margin-right:auto;">Join thousands of families who have rediscovered the joy of homemade desserts and snacks made with love.</p>
       <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
         <button class="btn btn-primary magnetic-btn">Get Instant Access →</button>
         <button class="btn btn-secondary magnetic-btn">Learn More</button>
@@ -742,7 +711,7 @@ footer {
   <div class="footer-grid">
     <div>
       <div class="footer-brand"><span>✦</span> Grandma's Kitchen</div>
-      <p class="footer-desc">500 recipes — 300 desserts and 200 snacks, lovingly passed down through generations of grandmothers.</p>
+      <p class="footer-desc">500 recipes — 300 desserts and 200 snacks, lovingly passed down through generations.</p>
     </div>
     <div class="footer-col">
       <h4>Explore</h4>
@@ -767,7 +736,7 @@ footer {
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Grandma's Kitchen. All rights reserved.</span>
+    <span>&copy; 2026 Grandma's Kitchen. All rights reserved.</span>
     <span>Baked with love and generations of wisdom ✦</span>
   </div>
 </footer>
@@ -793,7 +762,7 @@ footer {
   document.body.style.overflow = 'hidden';
 })();
 
-// ===== LENIS SMOOTH SCROLL =====
+// ===== LENIS =====
 const lenis = new Lenis({
   duration: 1.3,
   easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -802,13 +771,8 @@ const lenis = new Lenis({
   wheelMultiplier: 1,
   touchMultiplier: 1.5,
 });
-
-function raf(time) {
-  lenis.raf(time);
-  requestAnimationFrame(raf);
-}
+function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
 requestAnimationFrame(raf);
-
 lenis.on('scroll', ScrollTrigger.update);
 gsap.registerPlugin(ScrollTrigger);
 gsap.ticker.add((time) => lenis.raf(time * 1000));
@@ -824,17 +788,12 @@ lenis.on('scroll', (e) => {
 
 // ===== NAV =====
 const nav = document.getElementById('nav');
-lenis.on('scroll', (e) => {
-  nav.classList.toggle('scrolled', e.scroll > 60);
-});
-
+lenis.on('scroll', (e) => { nav.classList.toggle('scrolled', e.scroll > 60); });
 document.getElementById('navToggle').addEventListener('click', () => {
   document.getElementById('navLinks').classList.toggle('open');
 });
 document.querySelectorAll('.nav-links a').forEach(a => {
-  a.addEventListener('click', () => {
-    document.getElementById('navLinks').classList.remove('open');
-  });
+  a.addEventListener('click', () => { document.getElementById('navLinks').classList.remove('open'); });
 });
 
 // ===== THREE.JS 3D BOOK =====
@@ -847,8 +806,8 @@ document.querySelectorAll('.nav-links a').forEach(a => {
 
   const scene = new THREE.Scene();
 
-  const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-  camera.position.set(0, 0.3, 7.5);
+  const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
+  camera.position.set(1.5, 0.6, 7.0);
   camera.lookAt(0, 0, 0);
 
   const renderer = new THREE.WebGLRenderer({
@@ -890,7 +849,7 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   const bookGroup = new THREE.Group();
   scene.add(bookGroup);
 
-  // ===== BACK COVER GENERATION =====
+  // Back cover generation (canvas — only for the BACK)
   function makeBackCover() {
     const c = document.createElement('canvas');
     c.width = 1024; c.height = 1366;
@@ -948,7 +907,6 @@ document.querySelectorAll('.nav-links a').forEach(a => {
     return new THREE.CanvasTexture(c);
   }
 
-  // Back cover texture (generated synchronously via canvas)
   const backTex = makeBackCover();
 
   // Page texture
@@ -970,7 +928,7 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   }
   const pageTex = makePageTex();
 
-  // Materials
+  // Six separate materials
   const matCover = new THREE.MeshStandardMaterial({
     color: 0xBD6953,
     roughness: 0.35,
@@ -994,16 +952,21 @@ document.querySelectorAll('.nav-links a').forEach(a => {
     roughness: 0.7,
     metalness: 0.0,
   });
-  const matTopBottom = new THREE.MeshStandardMaterial({
+  const matTop = new THREE.MeshStandardMaterial({
+    map: pageTex,
+    roughness: 0.8,
+    metalness: 0.0,
+  });
+  const matBottom = new THREE.MeshStandardMaterial({
     map: pageTex,
     roughness: 0.8,
     metalness: 0.0,
   });
 
-  // Book dimensions
-  const bw = 3.0, bh = 4.2, bd = 0.55;
-
-  const materials = [matSpine, matPages, matTopBottom, matTopBottom, matCover, matBack];
+  // BoxGeometry material order: +x, -x, +y, -y, +z, -z
+  // spine, pages, top, bottom, front, back
+  const bw = 3.0, bh = 4.2, bd = 0.6;
+  const materials = [matSpine, matPages, matTop, matBottom, matCover, matBack];
   const geo = new THREE.BoxGeometry(bw, bh, bd);
   const mesh = new THREE.Mesh(geo, materials);
   mesh.castShadow = true;
@@ -1018,8 +981,7 @@ document.querySelectorAll('.nav-links a').forEach(a => {
     opacity: 0.06,
     wireframe: true,
   });
-  const edgeMesh = new THREE.Mesh(edgeGeo, edgeMat);
-  bookGroup.add(edgeMesh);
+  bookGroup.add(new THREE.Mesh(edgeGeo, edgeMat));
 
   // Shadow
   const shadowGeo = new THREE.CircleGeometry(2.2, 32);
@@ -1033,14 +995,12 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   shadow.position.y = -bh / 2 - 0.2;
   bookGroup.add(shadow);
 
-  // ===== FRONT COVER TEXTURE — COVER.png =====
+  // Load COVER.png via TextureLoader
   (function loadCover() {
     const loader = new THREE.TextureLoader();
     const paths = ['COVER.png'];
-
     try {
-      const loc = window.location.pathname;
-      const base = loc.substring(0, loc.lastIndexOf('/') + 1);
+      const base = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
       if (base) paths.push(base + 'COVER.png');
     } catch(e) {}
 
@@ -1053,7 +1013,7 @@ document.querySelectorAll('.nav-links a').forEach(a => {
         paths[index],
         function(texture) {
           if (!texture.image || !texture.image.width || !texture.image.height) {
-            console.error('COVER.png loaded but has no dimensions — retrying next path.');
+            console.error('COVER.png loaded but has no dimensions — retrying.');
             tryPath(index + 1);
             return;
           }
@@ -1063,6 +1023,7 @@ document.querySelectorAll('.nav-links a').forEach(a => {
           matCover.map = texture;
           matCover.color.setHex(0xFFFFFF);
           matCover.needsUpdate = true;
+          renderer.render(scene, camera);
         },
         undefined,
         function(err) {
@@ -1082,12 +1043,11 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   let targetRotY = 0, targetRotX = 0;
   let currentRotY = 0, currentRotX = 0;
   let isHovering = false;
-
   let idleTime = 0;
   let idleTargetY = 0;
 
   gsap.to(bookGroup.position, {
-    y: 0.12,
+    y: 0.15,
     duration: 3.5,
     ease: 'sine.inOut',
     yoyo: true,
@@ -1159,7 +1119,6 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   window.addEventListener('mouseup', onUp);
   container.addEventListener('mouseenter', () => { isHovering = true; });
   container.addEventListener('mouseleave', () => { isHovering = false; });
-
   container.addEventListener('touchstart', onDown, { passive: false });
   window.addEventListener('touchmove', onMove, { passive: false });
   window.addEventListener('touchend', onUp);
@@ -1207,189 +1166,74 @@ document.querySelectorAll('.nav-links a').forEach(a => {
 
 // ===== GSAP SCROLL ANIMATIONS =====
 document.addEventListener('DOMContentLoaded', () => {
-  // Hero entrance
-  gsap.from('.hero-content', {
-    y: 40,
-    opacity: 0,
-    duration: 1.2,
-    delay: 0.3,
-    ease: 'power4.out',
-  });
+  gsap.from('.hero-content', { y: 40, opacity: 0, duration: 1.2, delay: 0.3, ease: 'power4.out' });
+  gsap.from('#book-canvas-wrap', { y: 40, opacity: 0, scale: 0.9, duration: 1.4, delay: 0.1, ease: 'power4.out' });
+  gsap.from('.hero-badge', { y: 20, opacity: 0, duration: 0.8, delay: 0.5, ease: 'power3.out' });
+  gsap.from('.subtitle', { y: 20, opacity: 0, duration: 0.8, delay: 0.6, ease: 'power3.out' });
+  gsap.from('.hero-content h1', { y: 30, opacity: 0, duration: 1, delay: 0.7, ease: 'power3.out' });
+  gsap.from('.hero-content p', { y: 30, opacity: 0, duration: 1, delay: 0.9, ease: 'power3.out' });
+  gsap.from('.hero-buttons', { y: 30, opacity: 0, duration: 1, delay: 1.1, ease: 'power3.out' });
+  gsap.from('.hero-features', { y: 20, opacity: 0, duration: 0.8, delay: 1.3, ease: 'power3.out' });
 
-  gsap.from('#book-canvas-wrap', {
-    y: 40,
-    opacity: 0,
-    scale: 0.9,
-    duration: 1.4,
-    delay: 0.1,
-    ease: 'power4.out',
-  });
-
-  gsap.from('.hero-badge', {
-    y: 20,
-    opacity: 0,
-    duration: 0.8,
-    delay: 0.5,
-    ease: 'power3.out',
-  });
-
-  gsap.from('.subtitle', {
-    y: 20,
-    opacity: 0,
-    duration: 0.8,
-    delay: 0.6,
-    ease: 'power3.out',
-  });
-
-  gsap.from('.hero-content h1', {
-    y: 30,
-    opacity: 0,
-    duration: 1,
-    delay: 0.7,
-    ease: 'power3.out',
-  });
-
-  gsap.from('.hero-content p', {
-    y: 30,
-    opacity: 0,
-    duration: 1,
-    delay: 0.9,
-    ease: 'power3.out',
-  });
-
-  gsap.from('.hero-buttons', {
-    y: 30,
-    opacity: 0,
-    duration: 1,
-    delay: 1.1,
-    ease: 'power3.out',
-  });
-
-  gsap.from('.hero-features', {
-    y: 20,
-    opacity: 0,
-    duration: 0.8,
-    delay: 1.3,
-    ease: 'power3.out',
-  });
-
-  // === REVEAL ELEMENTS ON SCROLL ===
   const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
   reveals.forEach((el) => {
     const delay = parseFloat(el.dataset.delay) || 0;
     gsap.to(el, {
-      y: 0,
-      x: 0,
-      scale: 1,
-      opacity: 1,
-      duration: 1.0,
-      ease: 'power3.out',
-      delay: delay,
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 88%',
-        toggleActions: 'play none none none',
-      },
+      y: 0, x: 0, scale: 1, opacity: 1,
+      duration: 1.0, ease: 'power3.out', delay: delay,
+      scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
     });
   });
 
-  // === TIMELINE ITEMS ===
   gsap.utils.toArray('.timeline-item').forEach((item, i) => {
     gsap.to(item, {
-      x: 0,
-      opacity: 1,
-      duration: 0.8,
-      ease: 'power3.out',
+      x: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
       delay: parseFloat(item.dataset.delay) || 0,
-      scrollTrigger: {
-        trigger: item,
-        start: 'top 85%',
-        toggleActions: 'play none none none',
-      },
+      scrollTrigger: { trigger: item, start: 'top 85%', toggleActions: 'play none none none' },
     });
   });
 
-  // === FEATURE CARDS ===
   gsap.utils.toArray('.feature-card').forEach((card, i) => {
     gsap.from(card, {
-      y: 40,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power3.out',
+      y: 40, opacity: 0, duration: 0.8, ease: 'power3.out',
       delay: (parseFloat(card.dataset.delay) || 0),
-      scrollTrigger: {
-        trigger: card,
-        start: 'top 87%',
-        toggleActions: 'play none none none',
-      },
+      scrollTrigger: { trigger: card, start: 'top 87%', toggleActions: 'play none none none' },
     });
   });
 
-  // === INGREDIENT CARDS ===
   gsap.utils.toArray('.ingredient-card').forEach((card, i) => {
     gsap.from(card, {
-      scale: 0.85,
-      opacity: 0,
-      duration: 0.6,
-      ease: 'back.out(1.4)',
+      scale: 0.85, opacity: 0, duration: 0.6, ease: 'back.out(1.4)',
       delay: 0.05 * i,
-      scrollTrigger: {
-        trigger: '.ingredients-grid',
-        start: 'top 80%',
-        toggleActions: 'play none none none',
-      },
+      scrollTrigger: { trigger: '.ingredients-grid', start: 'top 80%', toggleActions: 'play none none none' },
     });
   });
 
-  // === STAT COUNTERS ===
   const counters = document.querySelectorAll('.stat-count');
   counters.forEach((el) => {
     const target = parseInt(el.dataset.target);
     gsap.fromTo(el,
       { textContent: 0 },
       {
-        textContent: target,
-        duration: 2.2,
-        ease: 'power2.out',
-        snap: { textContent: 1 },
-        scrollTrigger: {
-          trigger: el.closest('.stats-grid'),
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
+        textContent: target, duration: 2.2, ease: 'power2.out', snap: { textContent: 1 },
+        scrollTrigger: { trigger: el.closest('.stats-grid'), start: 'top 80%', toggleActions: 'play none none none' },
       }
     );
   });
 
-  // === TESTIMONIAL CARDS ===
   gsap.utils.toArray('.testimonial-card').forEach((card, i) => {
     gsap.from(card, {
-      y: 30,
-      opacity: 0,
-      duration: 0.8,
+      y: 30, opacity: 0, duration: 0.8, ease: 'power3.out',
       delay: (parseFloat(card.dataset.delay) || 0),
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: card,
-        start: 'top 85%',
-        toggleActions: 'play none none none',
-      },
+      scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play none none none' },
     });
   });
 
-  // === PREVIEW PAGES ===
   gsap.utils.toArray('.preview-page').forEach((page, i) => {
     gsap.from(page, {
-      scale: 0.9,
-      opacity: 0,
-      duration: 0.7,
+      scale: 0.9, opacity: 0, duration: 0.7, ease: 'power3.out',
       delay: 0.1 * i,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '.preview-carousel',
-        start: 'top 80%',
-        toggleActions: 'play none none none',
-      },
+      scrollTrigger: { trigger: '.preview-carousel', start: 'top 80%', toggleActions: 'play none none none' },
     });
   });
 });
@@ -1400,14 +1244,9 @@ document.querySelectorAll('.faq-question').forEach(q => {
     const item = q.parentElement;
     const answer = item.querySelector('.faq-answer');
     const isOpen = item.classList.contains('active');
-
     document.querySelectorAll('.faq-item.active').forEach(i => {
-      if (i !== item) {
-        i.classList.remove('active');
-        i.querySelector('.faq-answer').style.maxHeight = '0';
-      }
+      if (i !== item) { i.classList.remove('active'); i.querySelector('.faq-answer').style.maxHeight = '0'; }
     });
-
     item.classList.toggle('active');
     answer.style.maxHeight = isOpen ? '0' : answer.scrollHeight + 'px';
   });
@@ -1419,12 +1258,7 @@ document.querySelectorAll('.magnetic-btn').forEach(btn => {
     const rect = btn.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
-    gsap.to(btn, {
-      x: x * 0.2,
-      y: y * 0.2,
-      duration: 0.4,
-      ease: 'power2.out',
-    });
+    gsap.to(btn, { x: x * 0.2, y: y * 0.2, duration: 0.4, ease: 'power2.out' });
   });
   btn.addEventListener('mouseleave', () => {
     gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.4)' });
@@ -1433,11 +1267,8 @@ document.querySelectorAll('.magnetic-btn').forEach(btn => {
 
 // ===== PARALLAX =====
 lenis.on('scroll', (e) => {
-  const scrollY = e.scroll;
   const bg = document.querySelector('.hero-bg');
-  if (bg) {
-    bg.style.opacity = Math.max(0, 1 - scrollY / 800);
-  }
+  if (bg) bg.style.opacity = Math.max(0, 1 - e.scroll / 800);
 });
 
 console.log('✦ Grandma\'s Kitchen — 500 recipes, 300 desserts, 200 snacks.');
