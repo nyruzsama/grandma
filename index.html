@@ -3,449 +3,438 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grandma's Kitchen — Natural Herbal Remedies & Traditional Wisdom</title>
-<meta name="description" content="Discover timeless herbal remedies, healing recipes, and natural wellness secrets passed down through generations.">
+<title>Grandma's Kitchen — 500 Recipes: 300 Desserts & 200 Snacks</title>
+<meta name="description" content="Discover 500 lovingly crafted recipes from Grandma's kitchen — 300 irresistible desserts and 200 delicious snacks passed down through generations.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-<script src="https://unpkg.com/split-type@0.3.4/umd/index.js"></script>
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: auto; }
+:root {
+  --bg: #0C0B0A;
+  --surface: #1A1513;
+  --cream: #F5E5D2;
+  --gold: #BD6953;
+  --darkGold: #7E4028;
+  --bronze: #D3A979;
+  --glass: rgba(20, 19, 18, 0.7);
+  --glassBorder: rgba(189, 105, 83, 0.12);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --radius: 20px;
+}
 body {
-  background: #F8F4EC; font-family: 'Inter', sans-serif; color: #30402E;
-  font-weight: 300; line-height: 1.6; overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
+  background: var(--bg); color: var(--cream);
+  font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.6;
+  overflow-x: hidden; -webkit-font-smoothing: antialiased;
 }
-::selection { background: #A8B99A; color: #F8F4EC; }
+::selection { background: var(--gold); color: var(--bg); }
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #F8F4EC; }
-::-webkit-scrollbar-thumb { background: #A8B99A; border-radius: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--darkGold); border-radius: 3px; }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', serif; font-weight: 500;
-  line-height: 1.2; color: #30402E;
+h1, h2, h3, h4 {
+  font-family: 'Playfair Display', serif; font-weight: 600;
+  line-height: 1.15; color: var(--cream);
 }
-h1 { font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 600; letter-spacing: -0.02em; }
-h2 { font-size: clamp(2rem, 4.5vw, 3.8rem); letter-spacing: -0.01em; }
-h3 { font-size: clamp(1.4rem, 2.5vw, 2rem); }
-p, li { font-size: clamp(1rem, 1.2vw, 1.15rem); color: #5a6b4d; line-height: 1.7; }
+h1 { font-size: clamp(2.8rem, 6vw, 4.8rem); letter-spacing: -0.02em; }
+h2 { font-size: clamp(2rem, 4vw, 3.5rem); letter-spacing: -0.01em; }
+h3 { font-size: clamp(1.3rem, 2.2vw, 1.8rem); }
+p { font-size: clamp(0.95rem, 1.1vw, 1.1rem); color: rgba(245, 237, 224, 0.6); line-height: 1.7; }
 a { text-decoration: none; color: inherit; }
+img { pointer-events: none; user-select: none; -webkit-user-drag: none; }
+
 .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-.btn {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 16px 36px; border-radius: 50px; border: none;
-  font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 500;
-  cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative; overflow: hidden;
+/* LOADER */
+#loader {
+  position: fixed; inset: 0; z-index: 10000;
+  background: var(--bg); display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
 }
-.btn::after {
-  content: ''; position: absolute; inset: 0; border-radius: 50px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
-  opacity: 0; transition: opacity 0.4s;
+#loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.loader-book { width: 100px; height: 140px; position: relative; perspective: 800px; margin-bottom: 36px; }
+.loader-page {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--gold), var(--darkGold), var(--bronze));
+  border-radius: 4px; transform-origin: left center;
+  animation: bookOpen 2s ease-in-out infinite;
+  box-shadow: 0 0 40px rgba(189, 105, 83, 0.2);
 }
-.btn:hover::after { opacity: 1; }
-.btn-primary {
-  background: #6B7B4D; color: #F8F4EC;
+.loader-page:nth-child(2) { animation-delay: 0.15s; }
+.loader-page:nth-child(3) { animation-delay: 0.3s; }
+@keyframes bookOpen {
+  0% { transform: rotateY(0deg) scaleX(1); }
+  50% { transform: rotateY(-180deg) scaleX(0.8); }
+  100% { transform: rotateY(-360deg) scaleX(1); }
 }
-.btn-primary:hover { background: #30402E; transform: translateY(-2px); box-shadow: 0 12px 32px rgba(48,64,46,0.2); }
-.btn-secondary {
-  background: transparent; color: #6B7B4D; border: 1.5px solid #A8B99A;
-}
-.btn-secondary:hover { background: #A8B99A; color: #F8F4EC; transform: translateY(-2px); }
+.loader-text { font-size: 13px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); font-weight: 400; }
+.loader-bar { width: 200px; height: 1.5px; background: rgba(189, 105, 83, 0.1); border-radius: 2px; margin-top: 16px; position: relative; }
+.loader-progress { height: 100%; background: linear-gradient(90deg, var(--gold), var(--darkGold)); border-radius: 2px; width: 0%; transition: width 0.3s ease; }
 
-.section { padding: 120px 0; position: relative; }
-.section-label {
-  font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.15em; color: #A8B99A;
-  margin-bottom: 12px;
-}
-.section-title { margin-bottom: 20px; }
-.section-desc { max-width: 600px; margin-bottom: 60px; }
-
-/* Floating Particles */
-.particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-.particle {
-  position: absolute; width: 12px; height: 12px; opacity: 0;
-  background: #A8B99A; border-radius: 50%;
-  filter: blur(4px);
-}
-.leaf-particle {
-  position: absolute; width: 20px; height: 14px; opacity: 0;
-  background: #A8B99A; border-radius: 50% 0 50% 0;
-  filter: blur(2px);
-}
+/* SCROLL PROGRESS */
+#scrollProgress { position: fixed; top: 0; left: 0; height: 2px; background: linear-gradient(90deg, var(--gold), var(--darkGold)); z-index: 9999; width: 0%; transition: width 0.1s linear; }
 
 /* NAV */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   padding: 20px 32px; display: flex; align-items: center; justify-content: space-between;
-  background: linear-gradient(180deg, rgba(248,244,236,0.95) 0%, transparent 100%);
-  transition: all 0.5s;
+  background: transparent; transition: all 0.5s;
 }
-nav.scrolled { background: rgba(248,244,236,0.92); backdrop-filter: blur(20px); padding: 14px 32px; box-shadow: 0 1px 0 rgba(48,64,46,0.06); }
-.nav-logo { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 600; color: #30402E; display: flex; align-items: center; gap: 8px; }
-.nav-logo span { width: 6px; height: 6px; background: #A8B99A; border-radius: 50%; display: inline-block; }
-.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
-.nav-links a { font-size: 0.85rem; font-weight: 400; color: #5a6b4d; transition: color 0.3s; position: relative; }
+nav.scrolled {
+  background: rgba(12, 11, 10, 0.9); backdrop-filter: blur(20px);
+  padding: 12px 32px; box-shadow: 0 1px 0 rgba(189, 105, 83, 0.06);
+  border-bottom: 1px solid var(--glassBorder);
+}
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; color: var(--cream); display: flex; align-items: center; gap: 8px; }
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+.nav-links a {
+  font-size: 0.82rem; font-weight: 400; color: rgba(245, 237, 224, 0.6);
+  transition: color 0.3s; position: relative; letter-spacing: 0.3px;
+}
 .nav-links a::after {
-  content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1.5px;
-  background: #6B7B4D; transition: width 0.3s;
+  content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 1px;
+  background: var(--gold); transition: width 0.3s;
 }
 .nav-links a:hover::after { width: 100%; }
-.nav-links a:hover { color: #30402E; }
-.nav-cta { padding: 8px 20px; font-size: 0.8rem; }
+.nav-links a:hover { color: var(--cream); }
+.nav-cta {
+  padding: 8px 20px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.5px;
+  background: linear-gradient(135deg, var(--gold), var(--darkGold)); color: var(--bg);
+  border-radius: 50px; text-transform: uppercase; transition: all 0.3s;
+}
+.nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(189, 105, 83, 0.25); }
 .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-.nav-toggle span { width: 24px; height: 1.5px; background: #30402E; transition: all 0.3s; border-radius: 2px; }
+.nav-toggle span { width: 22px; height: 1.5px; background: var(--cream); transition: all 0.3s; border-radius: 2px; display: block; }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 16px 34px; border-radius: 50px; border: none;
+  font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600;
+  cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative; overflow: hidden;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold), var(--darkGold));
+  color: var(--bg);
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(189, 105, 83, 0.25); }
+.btn-secondary {
+  background: transparent; color: var(--cream);
+  border: 1px solid rgba(189, 105, 83, 0.25);
+}
+.btn-secondary:hover { background: rgba(189, 105, 83, 0.08); border-color: var(--gold); transform: translateY(-3px); }
 
 /* HERO */
 .hero {
-  min-height: 100vh; position: relative; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; overflow: hidden;
-  padding: 120px 24px 60px;
+  min-height: 100vh; position: relative; display: flex;
+  align-items: center; overflow: hidden;
+  padding: 120px 32px 60px;
 }
 .hero-bg {
   position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse at 50% 30%, rgba(168,185,154,0.12) 0%, transparent 60%),
-              radial-gradient(ellipse at 80% 70%, rgba(184,155,94,0.06) 0%, transparent 50%),
-              radial-gradient(ellipse at 20% 80%, rgba(107,123,77,0.06) 0%, transparent 50%);
+  background: radial-gradient(ellipse at 70% 30%, rgba(189, 105, 83, 0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 30% 70%, rgba(126, 64, 40, 0.05) 0%, transparent 50%);
   z-index: 0;
 }
-.hero-sunlight {
-  position: absolute; top: -20%; left: 50%; transform: translateX(-50%); pointer-events: none;
-  width: 60%; height: 80%;
-  background: linear-gradient(180deg, rgba(248,244,236,0.4) 0%, rgba(168,185,154,0.08) 50%, transparent 100%);
-  filter: blur(60px); z-index: 0;
-  animation: sunlightPulse 6s ease-in-out infinite;
+.hero-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+  align-items: center; max-width: 1200px; margin: 0 auto; width: 100%; position: relative; z-index: 2;
 }
-@keyframes sunlightPulse {
-  0%, 100% { opacity: 0.6; transform: translateX(-50%) translateY(0); }
-  50% { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(189, 105, 83, 0.1); border: 1px solid rgba(189, 105, 83, 0.15);
+  padding: 6px 16px; border-radius: 50px; font-size: 0.7rem; letter-spacing: 1px;
+  color: var(--gold); margin-bottom: 24px; text-transform: uppercase; font-weight: 500;
 }
+.hero-content h1 { margin-bottom: 6px; }
+.hero-content .subtitle {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: clamp(1rem, 1.6vw, 1.2rem); color: var(--gold); margin-bottom: 12px;
+}
+.hero-content p {
+  max-width: 480px; margin-bottom: 32px; line-height: 1.8;
+}
+.hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-features { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 32px; }
+.hero-features span { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: rgba(245, 237, 224, 0.5); }
+
+/* 3D BOOK WRAPPER */
 #book-canvas-wrap {
-  width: 320px; height: 420px; position: relative; z-index: 2;
-  margin-bottom: 40px; cursor: grab;
+  width: 100%; height: 100%; position: relative; z-index: 2;
+  min-height: 420px; cursor: grab;
 }
 #book-canvas-wrap:active { cursor: grabbing; }
 #book-canvas-wrap canvas { width: 100% !important; height: 100% !important; display: block; }
-.hero-content { text-align: center; position: relative; z-index: 3; max-width: 800px; }
-.hero-content h1 { margin-bottom: 8px; }
-.hero-content h1 .line { display: block; }
-.hero-content .subtitle {
-  font-family: 'Playfair Display', serif; font-style: italic;
-  font-size: clamp(1.1rem, 2vw, 1.4rem); color: #A8B99A; margin-bottom: 20px;
-}
-.hero-content p {
-  font-size: clamp(1rem, 1.3vw, 1.15rem); color: #6B7B4D;
-  max-width: 560px; margin: 0 auto 36px; line-height: 1.8;
-}
-.hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-.hero-scroll-indicator {
-  position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  color: #A8B99A; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; z-index: 3;
-  animation: scrollBounce 2s ease-in-out infinite;
-}
-@keyframes scrollBounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(6px); }
-}
-.hero-scroll-indicator .scroll-line {
-  width: 1px; height: 30px; background: linear-gradient(180deg, #A8B99A, transparent);
-}
 
-/* WHY SECTION */
-.why-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+/* SECTION COMMON */
+.section { padding: 100px 0; position: relative; }
+.section-head { text-align: center; margin-bottom: 60px; max-width: 700px; margin-left: auto; margin-right: auto; }
+.section-label {
+  font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold);
+  margin-bottom: 12px;
 }
-.why-visual {
-  position: relative; aspect-ratio: 4/5; border-radius: 20px; overflow: hidden;
-  background: linear-gradient(135deg, #EFE6D5, #e8dcc8);
-}
-.why-visual-inner {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  padding: 40px;
-}
-.why-visual-inner .herb-icon {
-  font-size: 6rem; opacity: 0.6; display: block;
-  animation: herbFloat 8s ease-in-out infinite;
-}
-.why-visual-inner .herb-icon:nth-child(2) { font-size: 4rem; animation-delay: -3s; }
-@keyframes herbFloat {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  33% { transform: translateY(-10px) rotate(2deg); }
-  66% { transform: translateY(5px) rotate(-1deg); }
-}
-.why-list { list-style: none; margin-top: 32px; }
-.why-list li {
-  display: flex; align-items: flex-start; gap: 16px; padding: 16px 0;
-  border-bottom: 1px solid rgba(168,185,154,0.2);
-}
-.why-list li:last-child { border-bottom: none; }
-.why-list .icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
-.why-list h4 { font-family: 'Playfair Display', serif; font-weight: 500; font-size: 1.1rem; margin-bottom: 4px; }
-.why-list p { font-size: 0.9rem; }
+.section-title { margin-bottom: 16px; }
+.section-desc { max-width: 540px; margin: 0 auto 50px; text-align: center; }
 
 /* FEATURES */
 .features-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
 }
 .feature-card {
-  background: rgba(239,230,213,0.5); border-radius: 20px; padding: 40px 32px;
-  backdrop-filter: blur(10px); border: 1px solid rgba(168,185,154,0.15);
-  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background: var(--glass); backdrop-filter: blur(16px);
+  border: 1px solid var(--glassBorder); border-radius: var(--radius);
+  padding: 36px 28px; transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: default; position: relative; overflow: hidden;
 }
 .feature-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, #A8B99A, #B89B5E);
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--bronze));
   opacity: 0; transition: opacity 0.5s;
 }
 .feature-card:hover::before { opacity: 1; }
-.feature-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(48,64,46,0.08); background: rgba(239,230,213,0.8); }
-.feature-icon { font-size: 2.5rem; margin-bottom: 20px; display: block; }
-.feature-card h3 { margin-bottom: 12px; }
-.feature-card p { font-size: 0.9rem; }
+.feature-card:hover { transform: translateY(-8px); box-shadow: var(--shadow); border-color: rgba(189, 105, 83, 0.2); }
+.feature-icon { font-size: 2rem; margin-bottom: 16px; display: block; }
+.feature-card h3 { margin-bottom: 8px; font-size: 1.2rem; }
+.feature-card p { font-size: 0.88rem; }
+
+/* INSIDE THE BOOK - Timeline */
+.timeline { position: relative; padding-left: 40px; }
+.timeline::before {
+  content: ''; position: absolute; left: 12px; top: 0; bottom: 0; width: 1px;
+  background: linear-gradient(180deg, var(--gold), transparent);
+}
+.timeline-item {
+  position: relative; padding: 20px 0 20px 32px;
+  opacity: 0; transform: translateX(-20px);
+}
+.timeline-item::before {
+  content: ''; position: absolute; left: -34px; top: 26px; width: 8px; height: 8px;
+  border-radius: 50%; background: var(--gold); border: 2px solid var(--bg);
+}
+.timeline-item .time-icon { font-size: 1.5rem; margin-bottom: 6px; display: block; }
+.timeline-item h3 { margin-bottom: 4px; font-size: 1.1rem; }
+.timeline-item p { font-size: 0.88rem; }
 
 /* BOOK PREVIEW */
 .preview-carousel {
-  display: flex; gap: 24px; overflow-x: auto; padding: 20px 0 40px;
+  display: flex; gap: 20px; overflow-x: auto; padding: 20px 0 40px;
   scroll-snap-type: x mandatory; -ms-overflow-style: none; scrollbar-width: none;
   cursor: grab;
 }
 .preview-carousel::-webkit-scrollbar { display: none; }
 .preview-page {
-  flex: 0 0 280px; scroll-snap-align: start; border-radius: 16px;
+  flex: 0 0 260px; scroll-snap-align: start; border-radius: 16px;
   overflow: hidden; position: relative;
-  aspect-ratio: 3/4; background: linear-gradient(135deg, #EFE6D5, #e4d9c4);
+  aspect-ratio: 3/4;
+  background: linear-gradient(135deg, rgba(189, 105, 83, 0.06), rgba(20, 19, 18, 0.8));
+  border: 1px solid var(--glassBorder);
   transition: transform 0.5s, box-shadow 0.5s;
 }
-.preview-page:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 20px 40px rgba(48,64,46,0.1); }
+.preview-page:hover { transform: translateY(-6px) scale(1.02); box-shadow: var(--shadow); }
 .preview-page-inner {
   position: absolute; inset: 0; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; padding: 32px;
+  align-items: center; justify-content: center; padding: 28px;
   text-align: center;
 }
 .preview-page-inner .page-num {
-  font-family: 'Playfair Display', serif; font-size: 3rem; color: #B89B5E; margin-bottom: 12px;
+  font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--gold); margin-bottom: 10px;
 }
-.preview-page-inner p { font-size: 0.85rem; }
-.preview-page:nth-child(2) .preview-page-inner { background: linear-gradient(135deg, rgba(168,185,154,0.15), rgba(239,230,213,0.5)); }
-.preview-page:nth-child(3) .preview-page-inner { background: linear-gradient(135deg, rgba(184,155,94,0.1), rgba(239,230,213,0.5)); }
-.preview-page:nth-child(4) .preview-page-inner { background: linear-gradient(135deg, rgba(107,123,77,0.1), rgba(239,230,213,0.5)); }
-
-/* INSIDE THE BOOK - Timeline */
-.timeline { position: relative; padding-left: 40px; }
-.timeline::before {
-  content: ''; position: absolute; left: 12px; top: 0; bottom: 0; width: 1.5px;
-  background: linear-gradient(180deg, #A8B99A, transparent);
-}
-.timeline-item {
-  position: relative; padding: 24px 0 24px 32px; opacity: 0; transform: translateX(-20px);
-}
-.timeline-item::before {
-  content: ''; position: absolute; left: -34px; top: 30px; width: 10px; height: 10px;
-  border-radius: 50%; background: #A8B99A; border: 2px solid #F8F4EC;
-}
-.timeline-item .time-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
-.timeline-item h3 { margin-bottom: 6px; }
-.timeline-item p { font-size: 0.9rem; color: #6B7B4D; }
+.preview-page-inner h3 { margin-bottom: 6px; font-size: 1.1rem; }
+.preview-page-inner p { font-size: 0.82rem; }
 
 /* INGREDIENTS */
 .ingredients-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 20px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 16px;
 }
 .ingredient-card {
-  background: rgba(239,230,213,0.4); border-radius: 16px; padding: 24px 16px;
-  text-align: center; border: 1px solid rgba(168,185,154,0.1);
+  background: rgba(20, 19, 18, 0.6); border-radius: 14px; padding: 20px 12px;
+  text-align: center; border: 1px solid var(--glassBorder);
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  cursor: default;
+  cursor: default; backdrop-filter: blur(8px);
 }
-.ingredient-card:hover { transform: translateY(-6px) scale(1.05); background: rgba(239,230,213,0.7); box-shadow: 0 12px 32px rgba(48,64,46,0.06); }
-.ingredient-icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
-.ingredient-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 500; }
-.ingredient-sub { font-size: 0.75rem; color: #A8B99A; margin-top: 4px; }
+.ingredient-card:hover { transform: translateY(-6px) scale(1.05); background: rgba(20, 19, 18, 0.9); border-color: rgba(189, 105, 83, 0.2); box-shadow: var(--shadow); }
+.ingredient-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+.ingredient-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 500; color: var(--cream); }
+.ingredient-sub { font-size: 0.72rem; color: rgba(189, 105, 83, 0.6); margin-top: 4px; }
 
 /* STATISTICS */
 .stats-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; text-align: center;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; text-align: center;
 }
 .stat-number {
-  font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 4vw, 4rem);
-  font-weight: 600; color: #30402E; line-height: 1;
+  font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 3.5vw, 3.5rem);
+  font-weight: 700; color: var(--cream); line-height: 1;
+  background: linear-gradient(135deg, var(--gold), var(--cream));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.stat-label { font-size: 0.85rem; color: #6B7B4D; margin-top: 8px; }
-.stat-suffix { font-size: 0.5em; vertical-align: super; color: #B89B5E; }
+.stat-label { font-size: 0.82rem; color: rgba(245, 237, 224, 0.5); margin-top: 8px; letter-spacing: 0.5px; }
 
 /* TESTIMONIALS */
 .testimonials-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
 }
 .testimonial-card {
-  background: rgba(239,230,213,0.4); border-radius: 20px; padding: 36px;
-  border: 1px solid rgba(168,185,154,0.1);
-  transition: all 0.5s;
+  background: var(--glass); backdrop-filter: blur(16px);
+  border: 1px solid var(--glassBorder); border-radius: var(--radius);
+  padding: 32px; transition: all 0.5s;
 }
-.testimonial-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(48,64,46,0.06); }
-.testimonial-stars { color: #B89B5E; font-size: 0.9rem; margin-bottom: 16px; letter-spacing: 2px; }
-.testimonial-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; margin-bottom: 20px; line-height: 1.7; }
+.testimonial-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.testimonial-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 14px; letter-spacing: 2px; }
+.testimonial-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.95rem; margin-bottom: 18px; line-height: 1.7; color: rgba(245, 237, 224, 0.8); }
 .testimonial-author { display: flex; align-items: center; gap: 12px; }
 .testimonial-avatar {
   width: 40px; height: 40px; border-radius: 50%;
-  background: linear-gradient(135deg, #A8B99A, #6B7B4D);
+  background: linear-gradient(135deg, var(--gold), var(--darkGold));
   display: flex; align-items: center; justify-content: center;
-  font-family: 'Playfair Display', serif; font-size: 1rem; color: #F8F4EC; font-weight: 500;
+  font-family: 'Playfair Display', serif; font-size: 0.9rem; color: var(--bg); font-weight: 600;
 }
-.testimonial-name { font-size: 0.9rem; font-weight: 500; }
-.testimonial-role { font-size: 0.75rem; color: #A8B99A; }
+.testimonial-name { font-size: 0.85rem; font-weight: 500; color: var(--cream); }
+.testimonial-role { font-size: 0.72rem; color: rgba(189, 105, 83, 0.6); }
 
 /* FAQ */
-.faq-list { max-width: 720px; margin: 0 auto; }
+.faq-list { max-width: 680px; margin: 0 auto; }
 .faq-item {
-  border-bottom: 1px solid rgba(168,185,154,0.2); overflow: hidden;
+  border-bottom: 1px solid rgba(189, 105, 83, 0.1); overflow: hidden;
 }
 .faq-question {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 20px 0; cursor: pointer; background: none; border: none;
+  padding: 18px 0; cursor: pointer; background: none; border: none;
   width: 100%; text-align: left;
-  font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 500;
-  color: #30402E; transition: color 0.3s;
+  font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 500;
+  color: var(--cream); transition: color 0.3s;
 }
-.faq-question:hover { color: #6B7B4D; }
+.faq-question:hover { color: var(--gold); }
 .faq-question .faq-toggle {
-  width: 24px; height: 24px; position: relative; flex-shrink: 0; margin-left: 16px;
+  width: 20px; height: 20px; position: relative; flex-shrink: 0; margin-left: 16px;
 }
 .faq-question .faq-toggle::before,
 .faq-question .faq-toggle::after {
-  content: ''; position: absolute; background: #6B7B4D; border-radius: 2px;
+  content: ''; position: absolute; background: var(--gold); border-radius: 2px;
   transition: transform 0.4s;
 }
-.faq-question .faq-toggle::before { width: 2px; height: 16px; top: 4px; left: 11px; }
-.faq-question .faq-toggle::after { width: 16px; height: 2px; top: 11px; left: 4px; }
+.faq-question .faq-toggle::before { width: 2px; height: 14px; top: 3px; left: 9px; }
+.faq-question .faq-toggle::after { width: 14px; height: 2px; top: 9px; left: 3px; }
 .faq-item.active .faq-toggle::before { transform: rotate(90deg); }
 .faq-answer {
   max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.faq-answer-inner { padding: 0 0 20px; font-size: 0.95rem; color: #6B7B4D; }
+.faq-answer-inner { padding: 0 0 18px; font-size: 0.9rem; color: rgba(245, 237, 224, 0.55); }
 
 /* CTA */
 .cta-section {
   position: relative; overflow: hidden;
-  background: linear-gradient(135deg, #30402E, #3d5139);
-  color: #F8F4EC; text-align: center;
+  background: linear-gradient(135deg, #141312, #1a1816);
+  text-align: center;
 }
 .cta-section::before {
   content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 50% 0%, rgba(168,185,154,0.15) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(189, 105, 83, 0.1) 0%, transparent 60%);
 }
-.cta-section h2 { color: #F8F4EC; }
-.cta-section p { color: rgba(248,244,236,0.7); }
+.cta-section h2 { color: var(--cream); }
 .cta-section .btn-primary {
-  background: #B89B5E; color: #F8F4EC;
+  box-shadow: 0 12px 32px rgba(189, 105, 83, 0.2);
 }
-.cta-section .btn-primary:hover { background: #a88b4e; box-shadow: 0 12px 32px rgba(184,155,94,0.3); }
-.cta-section .btn-secondary {
-  border-color: rgba(168,185,154,0.4); color: #A8B99A;
-}
-.cta-section .btn-secondary:hover { background: rgba(168,185,154,0.15); border-color: #A8B99A; }
 
 /* FOOTER */
 footer {
-  padding: 60px 24px 32px; border-top: 1px solid rgba(168,185,154,0.15);
+  padding: 60px 24px 32px; border-top: 1px solid rgba(189, 105, 83, 0.08);
 }
 .footer-grid {
   display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; max-width: 1200px; margin: 0 auto;
 }
-.footer-brand { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; margin-bottom: 8px; }
-.footer-desc { font-size: 0.85rem; color: #6B7B4D; max-width: 300px; }
-.footer-col h4 { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #A8B99A; margin-bottom: 16px; }
+.footer-brand { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; margin-bottom: 8px; }
+.footer-brand span { color: var(--gold); }
+.footer-desc { font-size: 0.82rem; color: rgba(245, 237, 224, 0.4); max-width: 280px; line-height: 1.7; }
+.footer-col h4 { font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold); margin-bottom: 16px; }
 .footer-col a {
-  display: block; font-size: 0.85rem; color: #6B7B4D; padding: 4px 0;
+  display: block; font-size: 0.82rem; color: rgba(245, 237, 224, 0.45); padding: 4px 0;
   transition: color 0.3s;
 }
-.footer-col a:hover { color: #30402E; }
+.footer-col a:hover { color: var(--cream); }
 .footer-bottom {
   max-width: 1200px; margin: 40px auto 0; padding-top: 20px;
-  border-top: 1px solid rgba(168,185,154,0.1);
+  border-top: 1px solid rgba(189, 105, 83, 0.06);
   display: flex; justify-content: space-between; align-items: center;
-  font-size: 0.8rem; color: #A8B99A;
+  font-size: 0.78rem; color: rgba(245, 237, 224, 0.3);
 }
 
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-  .features-grid { grid-template-columns: repeat(2, 1fr); }
-  .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
-}
-@media (max-width: 768px) {
-  .nav-links { display: none; }
-  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(248,244,236,0.98); backdrop-filter: blur(20px); padding: 20px 32px; gap: 20px; }
-  .nav-toggle { display: flex; }
-  #book-canvas-wrap { width: 240px; height: 320px; }
-  .hero-content h1 { font-size: 2.4rem; }
-  .why-grid { grid-template-columns: 1fr; gap: 40px; }
-  .why-visual { aspect-ratio: 3/2; }
-  .features-grid { grid-template-columns: 1fr; }
-  .testimonials-grid { grid-template-columns: 1fr; }
-  .stats-grid { gap: 24px; }
-  .section { padding: 80px 0; }
-  .preview-page { flex: 0 0 220px; }
-  .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
-  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
-  .hero { padding: 100px 24px 40px; }
-}
-@media (max-width: 480px) {
-  #book-canvas-wrap { width: 180px; height: 250px; }
-  .hero-content h1 { font-size: 2rem; }
-  .hero-content p { font-size: 0.95rem; }
-  .btn { padding: 14px 28px; font-size: 0.9rem; }
-  .hero-buttons { flex-direction: column; align-items: center; }
-  .ingredients-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  .footer-grid { grid-template-columns: 1fr; }
-}
-
-/* REVEAL ANIMATIONS */
+/* REVEAL */
 .reveal { opacity: 0; transform: translateY(30px); will-change: transform, opacity; }
 .reveal-left { opacity: 0; transform: translateX(-40px); will-change: transform, opacity; }
 .reveal-right { opacity: 0; transform: translateX(40px); will-change: transform, opacity; }
 .reveal-scale { opacity: 0; transform: scale(0.92); will-change: transform, opacity; }
 
-/* SCROLL INDICATOR IN HERO */
-.scroll-mouse {
-  width: 24px; height: 38px; border: 1.5px solid rgba(107,123,77,0.3); border-radius: 12px;
-  position: relative; display: flex; justify-content: center;
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .hero-content { text-align: center; }
+  .hero-content p { margin-left: auto; margin-right: auto; }
+  .hero-buttons { justify-content: center; }
+  .hero-features { justify-content: center; }
+  #book-canvas-wrap { min-height: 360px; }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
 }
-.scroll-mouse::before {
-  content: ''; width: 2px; height: 10px; background: #A8B99A; border-radius: 2px;
-  position: absolute; top: 8px;
-  animation: mouseScroll 2s ease-in-out infinite;
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(12, 11, 10, 0.98); backdrop-filter: blur(20px); padding: 20px 32px; gap: 18px; border-bottom: 1px solid var(--glassBorder); }
+  .nav-toggle { display: flex; }
+  #book-canvas-wrap { min-height: 280px; }
+  .hero { padding: 100px 24px 40px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .stats-grid { gap: 20px; }
+  .section { padding: 70px 0; }
+  .preview-page { flex: 0 0 200px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
 }
-@keyframes mouseScroll {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(12px); opacity: 0; }
+@media (max-width: 480px) {
+  #book-canvas-wrap { min-height: 220px; }
+  .hero-content h1 { font-size: 2.2rem; }
+  .hero-content p { font-size: 0.9rem; }
+  .btn { padding: 14px 26px; font-size: 0.85rem; }
+  .hero-buttons { flex-direction: column; align-items: center; }
+  .ingredients-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .footer-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<div class="particles" id="particles"></div>
+<div id="loader">
+  <div class="loader-book">
+    <div class="loader-page"></div>
+    <div class="loader-page"></div>
+    <div class="loader-page"></div>
+  </div>
+  <div class="loader-text">Loading</div>
+  <div class="loader-bar"><div class="loader-progress" id="loaderProgress"></div></div>
+</div>
+
+<div id="scrollProgress"></div>
 
 <nav id="nav">
-  <div class="nav-logo">✦ Grandma's Kitchen</div>
+  <div class="nav-logo"><span>✦</span> Grandma's Kitchen</div>
   <ul class="nav-links" id="navLinks">
     <li><a href="#why">About</a></li>
-    <li><a href="#features">Remedies</a></li>
+    <li><a href="#features">Recipes</a></li>
     <li><a href="#preview">Preview</a></li>
     <li><a href="#ingredients">Ingredients</a></li>
     <li><a href="#testimonials">Reviews</a></li>
     <li><a href="#faq">FAQ</a></li>
-    <li><a href="#cta" class="btn btn-primary nav-cta">Get the Book</a></li>
+    <li><a href="#cta" class="nav-cta">Get the Book</a></li>
   </ul>
   <button class="nav-toggle" id="navToggle" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -454,116 +443,65 @@ footer {
 
 <section class="hero" id="hero">
   <div class="hero-bg"></div>
-  <div class="hero-sunlight"></div>
-  <div class="hero-bg" style="background: radial-gradient(ellipse at 50% 80%, rgba(168,185,154,0.08) 0%, transparent 50%);"></div>
 
-  <div id="book-canvas-wrap"></div>
-
-  <div class="hero-content">
-    <p class="subtitle">Traditional Wisdom for Modern Wellness</p>
-    <h1 id="hero-title">
-      <span class="line">Grandma's</span>
-      <span class="line">Kitchen</span>
-    </h1>
-    <p>Discover timeless herbal remedies, healing recipes, comforting traditions, and natural wellness secrets lovingly passed down through generations.</p>
-    <div class="hero-buttons">
-      <button class="btn btn-primary magnetic-btn">Explore the Book →</button>
-      <button class="btn btn-secondary magnetic-btn">Discover Natural Healing</button>
+  <div class="hero-grid">
+    <div class="hero-content">
+      <div class="hero-badge"><span class="stars">✦</span> 500 Generational Recipes</div>
+      <p class="subtitle">From Grandma's Kitchen With Love</p>
+      <h1 id="hero-title">500<br>Grandma's Recipes</h1>
+      <p>Discover 300 irresistible desserts and 200 delicious snacks — every recipe lovingly passed down through generations, perfected in Grandma's kitchen.</p>
+      <div class="hero-buttons">
+        <button class="btn btn-primary magnetic-btn">Explore the Book →</button>
+        <button class="btn btn-secondary magnetic-btn">See Desserts</button>
+      </div>
+      <div class="hero-features">
+        <span>✦ 300 Desserts</span>
+        <span>✦ 200 Snacks</span>
+        <span>✦ Generational Recipes</span>
+      </div>
     </div>
-  </div>
 
-  <div class="hero-scroll-indicator">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
+    <div id="book-canvas-wrap"></div>
   </div>
 </section>
 
-<section class="section" id="why">
+<section class="section" id="why" style="background: rgba(20, 19, 18, 0.3);">
   <div class="container">
-    <div class="why-grid">
-      <div class="why-visual reveal-left">
-        <div class="why-visual-inner">
-          <span class="herb-icon">🌿</span>
-          <span class="herb-icon">🍃</span>
-          <span class="herb-icon">🌾</span>
-        </div>
-      </div>
-      <div class="reveal-right">
-        <p class="section-label">Why Grandma's Kitchen</p>
-        <h2 class="section-title">Healing Begins<br>At Home</h2>
-        <p class="section-desc" style="margin-bottom: 20px;">For generations, grandmothers have been the keepers of natural healing wisdom. In every kitchen, there exists a pharmacy of herbs, spices, and wholesome ingredients waiting to nurture and heal.</p>
-        <ul class="why-list">
-          <li>
-            <span class="icon">🌱</span>
-            <div>
-              <h4>Traditional Remedies</h4>
-              <p>Time-tested natural cures using herbs and spices found in every pantry.</p>
-            </div>
-          </li>
-          <li>
-            <span class="icon">🥣</span>
-            <div>
-              <h4>Healing Foods</h4>
-              <p>Nourishing recipes that strengthen immunity and restore vitality.</p>
-            </div>
-          </li>
-          <li>
-            <span class="icon">💚</span>
-            <div>
-              <h4>Kitchen Medicine</h4>
-              <p>Simple, powerful remedies made from ingredients you already have at home.</p>
-            </div>
-          </li>
-          <li>
-            <span class="icon">📖</span>
-            <div>
-              <h4>Family Wisdom</h4>
-              <p>Generational knowledge preserved and passed down with love and care.</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="features" style="background: rgba(168,185,154,0.04);">
-  <div class="container">
-    <div class="reveal" style="text-align:center;">
-      <p class="section-label">Premium Remedies</p>
-      <h2 class="section-title">Nature's Medicine Chest</h2>
-      <p class="section-desc" style="margin:0 auto 60px;">Every page holds a treasure of natural wisdom, carefully curated from generations of family healing traditions.</p>
+    <div class="section-head reveal">
+      <p class="section-label">Why Grandma's Kitchen</p>
+      <h2 class="section-title">500 Recipes.<br>Two Sweet Collections.</h2>
+      <p class="section-desc">For generations, grandmothers have filled their kitchens with the warmth of homemade treats. Now you can bring 300 of the finest desserts and 200 irresistible snacks into your home.</p>
     </div>
     <div class="features-grid">
       <div class="feature-card" data-delay="0">
-        <span class="feature-icon">🌿</span>
-        <h3>Herbal Remedies</h3>
-        <p>Discover potent herbal formulations for common ailments, from soothing teas to healing tinctures.</p>
+        <span class="feature-icon">🍰</span>
+        <h3>Classic Desserts</h3>
+        <p>From rich chocolate cakes to delicate fruit tarts — timeless sweets perfected over generations.</p>
       </div>
       <div class="feature-card" data-delay="0.1">
-        <span class="feature-icon">🍵</span>
-        <h3>Healing Teas</h3>
-        <p>Warm, comforting tea recipes infused with medicinal herbs to calm, heal, and restore balance.</p>
+        <span class="feature-icon">🍪</span>
+        <h3>Irresistible Snacks</h3>
+        <p>Crunchy cookies, savory bites, and everything in between for every craving throughout the day.</p>
       </div>
       <div class="feature-card" data-delay="0.2">
-        <span class="feature-icon">🥣</span>
-        <h3>Nourishing Recipes</h3>
-        <p>Wholesome meals designed to heal from within, using traditional ingredients and time-honored methods.</p>
-      </div>
-      <div class="feature-card" data-delay="0.1">
-        <span class="feature-icon">🧄</span>
-        <h3>Immune Support</h3>
-        <p>Powerful natural protocols to strengthen your family's immunity through every season.</p>
-      </div>
-      <div class="feature-card" data-delay="0.2">
-        <span class="feature-icon">🌼</span>
-        <h3>Traditional Wellness</h3>
-        <p>Ancient wellness practices adapted for modern life, bringing balance to body and mind.</p>
+        <span class="feature-icon">🥧</span>
+        <h3>Family Traditions</h3>
+        <p>Every recipe carries a story — handed down with love, tested in real family kitchens.</p>
       </div>
       <div class="feature-card" data-delay="0.3">
-        <span class="feature-icon">🍯</span>
-        <h3>Natural Ingredients</h3>
-        <p>Understanding the healing properties of everyday kitchen staples and wild herbs.</p>
+        <span class="feature-icon">📖</span>
+        <h3>Easy Instructions</h3>
+        <p>Clear step-by-step directions anyone can follow, from beginners to experienced bakers.</p>
+      </div>
+      <div class="feature-card" data-delay="0.15">
+        <span class="feature-icon">🍫</span>
+        <h3>Decadent Treats</h3>
+        <p>Indulgent desserts that turn ordinary moments into celebrations worth savoring.</p>
+      </div>
+      <div class="feature-card" data-delay="0.25">
+        <span class="feature-icon">🧁</span>
+        <h3>Quick Bites</h3>
+        <p>Fast, fuss-free snacks perfect for busy days, lunchboxes, and spontaneous cravings.</p>
       </div>
     </div>
   </div>
@@ -571,100 +509,95 @@ footer {
 
 <section class="section" id="preview">
   <div class="container">
-    <div class="reveal" style="text-align:center;">
+    <div class="section-head reveal">
       <p class="section-label">Inside the Book</p>
-      <h2 class="section-title">A Glimpse Within</h2>
-      <p class="section-desc" style="margin:0 auto 40px;">Beautifully crafted pages filled with wisdom, recipes, and natural remedies.</p>
+      <h2 class="section-title">A Taste of What's Inside</h2>
+      <p class="section-desc">Flip through pages of mouthwatering desserts and snacks, each with its own story and generations of love baked in.</p>
     </div>
     <div class="preview-carousel" id="previewCarousel">
       <div class="preview-page" data-delay="0">
         <div class="preview-page-inner">
-          <div class="page-num">01</div>
-          <h3 style="margin-bottom:8px;">Morning Rituals</h3>
-          <p>Start your day with healing teas and gentle remedies that nurture body and soul.</p>
+          <div class="page-num">🍰</div>
+          <h3>Chocolate Cakes</h3>
+          <p>Rich, moist, and decadent — every chocolate lover's dream collection.</p>
         </div>
       </div>
       <div class="preview-page" data-delay="0.1">
         <div class="preview-page-inner">
-          <div class="page-num">02</div>
-          <h3 style="margin-bottom:8px;">Herbal Apothecary</h3>
-          <p>A comprehensive guide to medicinal herbs and their traditional applications.</p>
+          <div class="page-num">🥟</div>
+          <h3>Fruit Pies</h3>
+          <p>Flaky, buttery crusts filled with the sweetest seasonal fruits.</p>
         </div>
       </div>
       <div class="preview-page" data-delay="0.2">
         <div class="preview-page-inner">
-          <div class="page-num">03</div>
-          <h3 style="margin-bottom:8px;">Healing Broths</h3>
-          <p>Nourishing bone broths and herbal soups that restore vitality from within.</p>
+          <div class="page-num">🍪</div>
+          <h3>Cookie Jar</h3>
+          <p>Crunchy, chewy, and everything between — cookies for every mood.</p>
         </div>
       </div>
       <div class="preview-page" data-delay="0.3">
         <div class="preview-page-inner">
-          <div class="page-num">04</div>
-          <h3 style="margin-bottom:8px;">Kitchen Cures</h3>
-          <p>Simple remedies for common ailments using ingredients from your pantry.</p>
+          <div class="page-num">🧁</div>
+          <h3>Cupcakes</h3>
+          <p>Perfectly frosted little cakes that bring joy to any celebration.</p>
         </div>
       </div>
       <div class="preview-page" data-delay="0.4">
         <div class="preview-page-inner">
-          <div class="page-num">05</div>
-          <h3 style="margin-bottom:8px;">Seasonal Wisdom</h3>
-          <p>Traditional knowledge for staying healthy through every changing season.</p>
+          <div class="page-num">🌰</div>
+          <h3>Savory Snacks</h3>
+          <p>Roasted nuts, cheesy bites, and crispy delights for every craving.</p>
         </div>
       </div>
     </div>
-    <div style="text-align:center; margin-top:20px;">
+    <div style="text-align:center; margin-top:10px;">
       <button class="btn btn-primary magnetic-btn">View Full Preview →</button>
     </div>
   </div>
 </section>
 
-<section class="section" id="inside" style="background: rgba(168,185,154,0.04);">
+<section class="section" id="inside" style="background: rgba(20, 19, 18, 0.3);">
   <div class="container">
-    <div class="reveal" style="text-align:center;margin-bottom:60px;">
+    <div class="section-head reveal">
       <p class="section-label">Journey Through</p>
-      <h2 class="section-title">Inside the Book</h2>
+      <h2 class="section-title">What You'll Find Inside</h2>
     </div>
     <div class="timeline" id="timeline">
       <div class="timeline-item" data-delay="0">
-        <span class="time-icon">🌅</span>
-        <h3>Morning Remedies</h3>
-        <p>Gentle herbal infusions and rituals to awaken the body and calm the mind, starting each day with intention.</p>
+        <span class="time-icon">🍫</span>
+        <h3>Decadent Desserts</h3>
+        <p>Over 100 chocolate-based treats from fudgy brownies to silky mousses that satisfy every sweet tooth.</p>
       </div>
       <div class="timeline-item" data-delay="0.15">
-        <span class="time-icon">🍵</span>
-        <h3>Healing Drinks</h3>
-        <p>Warm elixirs and restorative beverages crafted from grandmother's most cherished recipes.</p>
+        <span class="time-icon">🥧</span>
+        <h3>Fruit & Cream Delights</h3>
+        <p>Seasonal fruit pies, creamy cheesecakes, and refreshing citrus treats bursting with flavor.</p>
       </div>
       <div class="timeline-item" data-delay="0.3">
-        <span class="time-icon">🛡️</span>
-        <h3>Immune Boosters</h3>
-        <p>Powerful natural protocols to strengthen your family's defenses through every season.</p>
+        <span class="time-icon">🍪</span>
+        <h3>Cookies & Bites</h3>
+        <p>An endless variety of cookies — from classic chocolate chip to exotic international favorites.</p>
       </div>
       <div class="timeline-item" data-delay="0.45">
-        <span class="time-icon">📜</span>
-        <h3>Traditional Recipes</h3>
-        <p>Time-honored dishes passed down through generations, each with its own healing story.</p>
+        <span class="time-icon">🥨</span>
+        <h3>Savory Snacks</h3>
+        <p>Crunchy, salty, and savory bites perfect for parties, lunchboxes, or quiet evenings at home.</p>
       </div>
       <div class="timeline-item" data-delay="0.6">
-        <span class="time-icon">🌿</span>
-        <h3>Herbal Ingredients</h3>
-        <p>Understanding the profound healing properties hidden in everyday kitchen staples.</p>
+        <span class="time-icon">🧁</span>
+        <h3>Celebration Cakes</h3>
+        <p>Showstopping layer cakes, birthday favorites, and holiday specialties for every occasion.</p>
       </div>
       <div class="timeline-item" data-delay="0.75">
-        <span class="time-icon">💚</span>
-        <h3>Natural Wellness Tips</h3>
-        <p>Simple daily practices and ancient wisdom for maintaining vibrant health naturally.</p>
+        <span class="time-icon">🍿</span>
+        <h3>Quick & Easy Snacks</h3>
+        <p>Fast, fuss-free recipes for when cravings strike — ready in minutes with simple ingredients.</p>
       </div>
       <div class="timeline-item" data-delay="0.9">
-        <span class="time-icon">🏠</span>
-        <h3>Kitchen Remedies</h3>
-        <p>Transform your kitchen into a natural pharmacy with remedies made from everyday ingredients.</p>
-      </div>
-      <div class="timeline-item" data-delay="1.05">
-        <span class="time-icon">✨</span>
-        <h3>Daily Healing Habits</h3>
-        <p>Small, consistent practices that create lasting wellness and deeper connection to natural living.</p>
+        <span class="time-icon">🍯</span>
+        <h3>Grandma's Specials</h3>
+        <p>The most cherished recipes — the ones everyone begs Grandma to bring to every gathering.</p>
       </div>
     </div>
   </div>
@@ -672,44 +605,44 @@ footer {
 
 <section class="section" id="ingredients">
   <div class="container">
-    <div class="reveal" style="text-align:center;">
-      <p class="section-label">Natural Pharmacy</p>
-      <h2 class="section-title">Herbal Ingredients</h2>
-      <p class="section-desc" style="margin:0 auto 60px;">Nature's most powerful healing ingredients, each with a story and purpose in traditional medicine.</p>
+    <div class="section-head reveal">
+      <p class="section-label">Key Ingredients</p>
+      <h2 class="section-title">The Heart of Every Recipe</h2>
+      <p class="section-desc">Simple, wholesome ingredients that make Grandma's treats truly unforgettable.</p>
     </div>
     <div class="ingredients-grid">
-      <div class="ingredient-card" data-delay="0"><span class="ingredient-icon">🟡</span><div class="ingredient-name">Turmeric</div><div class="ingredient-sub">Anti-inflammatory</div></div>
-      <div class="ingredient-card" data-delay="0.05"><span class="ingredient-icon">🫚</span><div class="ingredient-name">Ginger</div><div class="ingredient-sub">Digestive Aid</div></div>
-      <div class="ingredient-card" data-delay="0.1"><span class="ingredient-icon">🧄</span><div class="ingredient-name">Garlic</div><div class="ingredient-sub">Immune Shield</div></div>
-      <div class="ingredient-card" data-delay="0.15"><span class="ingredient-icon">🍋</span><div class="ingredient-name">Lemon</div><div class="ingredient-sub">Vitamin C</div></div>
-      <div class="ingredient-card" data-delay="0.2"><span class="ingredient-icon">🍯</span><div class="ingredient-name">Honey</div><div class="ingredient-sub">Natural Healer</div></div>
-      <div class="ingredient-card" data-delay="0.25"><span class="ingredient-icon">🟫</span><div class="ingredient-name">Cinnamon</div><div class="ingredient-sub">Warming Spice</div></div>
-      <div class="ingredient-card" data-delay="0.3"><span class="ingredient-icon">🌿</span><div class="ingredient-name">Moringa</div><div class="ingredient-sub">Nutrient Dense</div></div>
-      <div class="ingredient-card" data-delay="0.35"><span class="ingredient-icon">🌱</span><div class="ingredient-name">Peppermint</div><div class="ingredient-sub">Calming Herb</div></div>
-      <div class="ingredient-card" data-delay="0.4"><span class="ingredient-icon">🌼</span><div class="ingredient-name">Chamomile</div><div class="ingredient-sub">Peaceful Sleep</div></div>
-      <div class="ingredient-card" data-delay="0.45"><span class="ingredient-icon">🌵</span><div class="ingredient-name">Aloe Vera</div><div class="ingredient-sub">Healing Balm</div></div>
+      <div class="ingredient-card" data-delay="0"><span class="ingredient-icon">🍫</span><div class="ingredient-name">Chocolate</div><div class="ingredient-sub">Rich & Decadent</div></div>
+      <div class="ingredient-card" data-delay="0.05"><span class="ingredient-icon">🧈</span><div class="ingredient-name">Butter</div><div class="ingredient-sub">Creamy Base</div></div>
+      <div class="ingredient-card" data-delay="0.1"><span class="ingredient-icon">🥚</span><div class="ingredient-name">Eggs</div><div class="ingredient-sub">Perfect Binding</div></div>
+      <div class="ingredient-card" data-delay="0.15"><span class="ingredient-icon">🌾</span><div class="ingredient-name">Flour</div><div class="ingredient-sub">Essential Foundation</div></div>
+      <div class="ingredient-card" data-delay="0.2"><span class="ingredient-icon">🍯</span><div class="ingredient-name">Honey</div><div class="ingredient-sub">Natural Sweetness</div></div>
+      <div class="ingredient-card" data-delay="0.25"><span class="ingredient-icon">🫐</span><div class="ingredient-name">Berries</div><div class="ingredient-sub">Fresh & Tangy</div></div>
+      <div class="ingredient-card" data-delay="0.3"><span class="ingredient-icon">🥜</span><div class="ingredient-name">Nuts</div><div class="ingredient-sub">Crunchy Texture</div></div>
+      <div class="ingredient-card" data-delay="0.35"><span class="ingredient-icon">🥛</span><div class="ingredient-name">Cream</div><div class="ingredient-sub">Silky Smooth</div></div>
+      <div class="ingredient-card" data-delay="0.4"><span class="ingredient-icon">🍦</span><div class="ingredient-name">Vanilla</div><div class="ingredient-sub">Classic Flavor</div></div>
+      <div class="ingredient-card" data-delay="0.45"><span class="ingredient-icon">🧂</span><div class="ingredient-name">Sea Salt</div><div class="ingredient-sub">Perfect Balance</div></div>
     </div>
   </div>
 </section>
 
-<section class="section" id="stats" style="background: rgba(168,185,154,0.04);">
+<section class="section" id="stats" style="background: rgba(20, 19, 18, 0.3);">
   <div class="container">
     <div class="stats-grid">
       <div class="reveal" data-delay="0">
-        <div class="stat-number"><span class="stat-count" data-target="500">0</span><span class="stat-suffix">+</span></div>
-        <div class="stat-label">Natural Remedies</div>
+        <div class="stat-number"><span class="stat-count" data-target="500">0</span>+</div>
+        <div class="stat-label">Total Recipes</div>
       </div>
       <div class="reveal" data-delay="0.15">
-        <div class="stat-number"><span class="stat-count" data-target="120">0</span><span class="stat-suffix">+</span></div>
-        <div class="stat-label">Healing Recipes</div>
+        <div class="stat-number"><span class="stat-count" data-target="300">0</span>+</div>
+        <div class="stat-label">Desserts</div>
       </div>
       <div class="reveal" data-delay="0.3">
-        <div class="stat-number"><span class="stat-count" data-target="50">0</span><span class="stat-suffix">+</span></div>
-        <div class="stat-label">Herbal Ingredients</div>
+        <div class="stat-number"><span class="stat-count" data-target="200">0</span>+</div>
+        <div class="stat-label">Snacks</div>
       </div>
       <div class="reveal" data-delay="0.45">
-        <div class="stat-number"><span class="stat-count" data-target="15">0</span><span class="stat-suffix">k+</span></div>
-        <div class="stat-label">Happy Readers</div>
+        <div class="stat-number"><span class="stat-count" data-target="50">0</span><span style="font-size:0.5em;vertical-align:super;color:var(--gold);">+</span></div>
+        <div class="stat-label">Years of Wisdom</div>
       </div>
     </div>
   </div>
@@ -717,17 +650,17 @@ footer {
 
 <section class="section" id="testimonials">
   <div class="container">
-    <div class="reveal" style="text-align:center;">
+    <div class="section-head reveal">
       <p class="section-label">Reader Love</p>
       <h2 class="section-title">Kind Words</h2>
-      <p class="section-desc" style="margin:0 auto 60px;">Hear from those who have brought Grandma's healing wisdom into their homes.</p>
+      <p class="section-desc">Hear from those who have brought Grandma's recipes into their kitchens.</p>
     </div>
     <div class="testimonials-grid">
       <div class="testimonial-card" data-delay="0">
         <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"This book brought tears to my eyes. It feels like my own grandmother is right there in the kitchen with me, showing me how to make the remedies she used to make. A true treasure."</p>
+        <p class="testimonial-text">"This cookbook feels like coming home. Every recipe I've tried tastes exactly like my own grandmother used to make. The chocolate cake recipe alone is worth the price!"</p>
         <div class="testimonial-author">
-          <div class="testimonial-avatar">M</div>
+          <div class="testimonial-avatar">MC</div>
           <div>
             <div class="testimonial-name">Margaret Chen</div>
             <div class="testimonial-role">Verified Reader</div>
@@ -736,9 +669,9 @@ footer {
       </div>
       <div class="testimonial-card" data-delay="0.15">
         <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"I've tried countless wellness books, but this one is different. The recipes actually work, the ingredients are simple to find, and the wisdom feels authentic. My family has noticed a real difference."</p>
+        <p class="testimonial-text">"I've tried countless cookbooks, but this one is different. The desserts are incredible and the snacks are perfect for my kids' lunchboxes. Simple ingredients, amazing results."</p>
         <div class="testimonial-author">
-          <div class="testimonial-avatar">J</div>
+          <div class="testimonial-avatar">JO</div>
           <div>
             <div class="testimonial-name">James Okafor</div>
             <div class="testimonial-role">Verified Reader</div>
@@ -747,9 +680,9 @@ footer {
       </div>
       <div class="testimonial-card" data-delay="0.3">
         <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"The herbal remedy section alone is worth the price. I've been able to treat common colds, upset stomachs, and even skin issues using ingredients I already had in my kitchen. Absolutely wonderful."</p>
+        <p class="testimonial-text">"The snack section alone has transformed our family's baking. From crispy cookies to savory bites, every recipe is foolproof and absolutely delicious. Thank you, Grandma!"</p>
         <div class="testimonial-author">
-          <div class="testimonial-avatar">S</div>
+          <div class="testimonial-avatar">SM</div>
           <div>
             <div class="testimonial-name">Sarah Mitchell</div>
             <div class="testimonial-role">Verified Reader</div>
@@ -760,32 +693,32 @@ footer {
   </div>
 </section>
 
-<section class="section" id="faq" style="background: rgba(168,185,154,0.04);">
+<section class="section" id="faq" style="background: rgba(20, 19, 18, 0.3);">
   <div class="container">
-    <div class="reveal" style="text-align:center;">
+    <div class="section-head reveal">
       <p class="section-label">Questions</p>
       <h2 class="section-title">Frequently Asked</h2>
     </div>
     <div class="faq-list" id="faqList">
       <div class="faq-item reveal" data-delay="0">
-        <button class="faq-question">What makes this book different from other herbal remedy books?<span class="faq-toggle"></span></button>
-        <div class="faq-answer"><div class="faq-answer-inner">Grandma's Kitchen is more than a recipe collection—it's a living record of generational wisdom. Every remedy has been lovingly gathered from grandmothers around the world, tested in real kitchens, and presented with the warmth and care of a family heirloom.</div></div>
+        <button class="faq-question">What makes this cookbook different from others?<span class="faq-toggle"></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Grandma's Kitchen is more than a recipe collection — it's a living record of generational baking wisdom. Every recipe has been lovingly gathered from grandmothers around the world, tested in real home kitchens, and presented with the warmth and care of a family heirloom.</div></div>
       </div>
       <div class="faq-item reveal" data-delay="0.1">
         <button class="faq-question">Are the ingredients easy to find?<span class="faq-toggle"></span></button>
-        <div class="faq-answer"><div class="faq-answer-inner">Absolutely. One of the core principles of this book is accessibility. Most ingredients are common kitchen staples or can be found at your local grocery store or farmer's market. No exotic or hard-to-find items required.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">Absolutely. One of the core principles of this book is accessibility. Most ingredients are common kitchen staples or can be found at your local grocery store. No fancy or hard-to-find items required.</div></div>
       </div>
       <div class="faq-item reveal" data-delay="0.2">
         <button class="faq-question">Is this book suitable for beginners?<span class="faq-toggle"></span></button>
-        <div class="faq-answer"><div class="faq-answer-inner">Yes! Whether you're new to herbal remedies or have been practicing natural wellness for years, you'll find something valuable. Each recipe includes clear instructions, background on the ingredients, and the traditional wisdom behind it.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">Yes! Whether you're a first-time baker or have been making treats for years, you'll find something valuable. Each recipe includes clear instructions, prep times, and the traditional wisdom behind it.</div></div>
       </div>
       <div class="faq-item reveal" data-delay="0.3">
         <button class="faq-question">How is the book delivered?<span class="faq-toggle"></span></button>
-        <div class="faq-answer"><div class="faq-answer-inner">The book is available as a beautifully formatted digital download (PDF) that works on all devices—phone, tablet, computer, or e-reader. You'll receive instant access upon purchase.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">The book is available as a beautifully formatted digital download (PDF) that works on all devices — phone, tablet, computer, or e-reader. You'll receive instant access upon purchase.</div></div>
       </div>
       <div class="faq-item reveal" data-delay="0.4">
         <button class="faq-question">Can I share these recipes with my family?<span class="faq-toggle"></span></button>
-        <div class="faq-answer"><div class="faq-answer-inner">The recipes and remedies in this book were made to be shared, just as grandmothers have always done. We encourage you to cook, heal, and pass this wisdom forward to your loved ones.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner">These recipes were made to be shared, just as grandmothers have always done. We encourage you to bake, share, and pass this delicious wisdom forward to your loved ones.</div></div>
       </div>
     </div>
   </div>
@@ -794,10 +727,10 @@ footer {
 <section class="section cta-section" id="cta">
   <div class="container" style="position:relative;z-index:1;">
     <div class="reveal">
-      <p class="section-label" style="color:rgba(168,185,154,0.7);">Begin Your Journey</p>
-      <h2 class="section-title" style="max-width:600px;margin:0 auto 16px;">Bring Grandma's Healing Wisdom Into Your Home</h2>
-      <p style="margin-bottom:40px;color:rgba(248,244,236,0.6);max-width:500px;margin-left:auto;margin-right:auto;">Join thousands of families who have rediscovered the power of natural healing through traditional kitchen remedies.</p>
-      <div class="hero-buttons" style="justify-content:center;">
+      <p class="section-label" style="color:rgba(189,105,83,0.5);">Begin Your Baking Journey</p>
+      <h2 class="section-title" style="max-width:600px;margin:0 auto 16px;">Bring Grandma's Sweetest Recipes Into Your Kitchen</h2>
+      <p style="margin-bottom:36px;color:rgba(245,237,224,0.5);max-width:480px;margin-left:auto;margin-right:auto;">Join thousands of families who have rediscovered the joy of homemade desserts and snacks made with love.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
         <button class="btn btn-primary magnetic-btn">Get Instant Access →</button>
         <button class="btn btn-secondary magnetic-btn">Learn More</button>
       </div>
@@ -808,20 +741,20 @@ footer {
 <footer>
   <div class="footer-grid">
     <div>
-      <div class="footer-brand">✦ Grandma's Kitchen</div>
-      <p class="footer-desc">Preserving traditional healing wisdom and natural remedies, lovingly passed down through generations of grandmothers.</p>
+      <div class="footer-brand"><span>✦</span> Grandma's Kitchen</div>
+      <p class="footer-desc">500 recipes — 300 desserts and 200 snacks, lovingly passed down through generations of grandmothers.</p>
     </div>
     <div class="footer-col">
       <h4>Explore</h4>
       <a href="#why">About</a>
-      <a href="#features">Remedies</a>
+      <a href="#features">Recipes</a>
       <a href="#preview">Preview</a>
       <a href="#ingredients">Ingredients</a>
     </div>
     <div class="footer-col">
       <h4>Support</h4>
       <a href="#">Contact Us</a>
-      <a href="#">Shipping</a>
+      <a href="#">Privacy Policy</a>
       <a href="#faq">FAQ</a>
       <a href="#">Returns</a>
     </div>
@@ -835,14 +768,34 @@ footer {
   </div>
   <div class="footer-bottom">
     <span>© 2026 Grandma's Kitchen. All rights reserved.</span>
-    <span>Crafted with natural wisdom and care ✦</span>
+    <span>Baked with love and generations of wisdom ✦</span>
   </div>
 </footer>
 
 <script>
+// ===== LOADER =====
+(function() {
+  const loader = document.getElementById('loader');
+  const progress = document.getElementById('loaderProgress');
+  let p = 0;
+  const interval = setInterval(function() {
+    p += Math.random() * 12 + 3;
+    if (p > 100) p = 100;
+    progress.style.width = p + '%';
+    if (p >= 100) {
+      clearInterval(interval);
+      setTimeout(function() {
+        loader.classList.add('hidden');
+        document.body.style.overflow = '';
+      }, 500);
+    }
+  }, 150);
+  document.body.style.overflow = 'hidden';
+})();
+
 // ===== LENIS SMOOTH SCROLL =====
 const lenis = new Lenis({
-  duration: 1.4,
+  duration: 1.3,
   easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   orientation: 'vertical',
   smoothWheel: true,
@@ -861,13 +814,20 @@ gsap.registerPlugin(ScrollTrigger);
 gsap.ticker.add((time) => lenis.raf(time * 1000));
 gsap.ticker.lagSmoothing(0);
 
-// ===== NAV SCROLL EFFECT =====
+// ===== SCROLL PROGRESS =====
+const scrollBar = document.getElementById('scrollProgress');
+lenis.on('scroll', (e) => {
+  const scrollTop = e.scroll;
+  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  scrollBar.style.width = (scrollTop / scrollHeight * 100) + '%';
+});
+
+// ===== NAV =====
 const nav = document.getElementById('nav');
 lenis.on('scroll', (e) => {
   nav.classList.toggle('scrolled', e.scroll > 60);
 });
 
-// ===== NAV TOGGLE =====
 document.getElementById('navToggle').addEventListener('click', () => {
   document.getElementById('navLinks').classList.toggle('open');
 });
@@ -883,7 +843,7 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   if (!container) return;
 
   const width = container.clientWidth;
-  const height = container.clientHeight;
+  const height = container.clientHeight || 420;
 
   const scene = new THREE.Scene();
 
@@ -930,9 +890,66 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   const bookGroup = new THREE.Group();
   scene.add(bookGroup);
 
-  // Texture loader
-  const loader = new THREE.TextureLoader();
-  const coverTex = loader.load('ina.png');
+  // ===== BACK COVER GENERATION =====
+  function makeBackCover() {
+    const c = document.createElement('canvas');
+    c.width = 1024; c.height = 1366;
+    const ctx = c.getContext('2d');
+
+    const grad = ctx.createLinearGradient(0, 0, 0, c.height);
+    grad.addColorStop(0, '#2A1F1A');
+    grad.addColorStop(1, '#1A1412');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, c.width, c.height);
+
+    ctx.strokeStyle = 'rgba(189,105,83,0.25)';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(40, 40, c.width - 80, c.height - 80);
+
+    ctx.strokeStyle = 'rgba(189,105,83,0.08)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(56, 56, c.width - 112, c.height - 112);
+
+    ctx.strokeStyle = 'rgba(211,169,121,0.06)';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i < 60; i++) {
+      const x = Math.random() * c.width;
+      const y = Math.random() * c.height;
+      ctx.beginPath();
+      ctx.arc(x, y, Math.random() * 1.5 + 0.5, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = 'rgba(245,229,210,0.55)';
+    ctx.font = 'bold 52px "Playfair Display", Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText("Grandma's Kitchen", c.width / 2, c.height / 2 - 80);
+
+    ctx.fillStyle = 'rgba(245,229,210,0.35)';
+    ctx.font = '32px "Inter", sans-serif';
+    ctx.fillText('500 Recipes', c.width / 2, c.height / 2);
+
+    ctx.fillStyle = 'rgba(211,169,121,0.4)';
+    ctx.font = '22px "Inter", sans-serif';
+    ctx.fillText('300 Desserts  ·  200 Snacks', c.width / 2, c.height / 2 + 55);
+
+    ctx.fillStyle = 'rgba(189,105,83,0.3)';
+    ctx.font = '18px "Inter", sans-serif';
+    ctx.fillText('✦  Generations of Love  ✦', c.width / 2, c.height / 2 + 110);
+
+    const barcodeX = c.width / 2 - 80;
+    const barcodeY = c.height - 120;
+    for (let i = 0; i < 40; i++) {
+      ctx.fillStyle = `rgba(245,229,210,${0.15 + Math.random() * 0.2})`;
+      ctx.fillRect(barcodeX + i * 4, barcodeY, 2, 50 - Math.random() * 20);
+    }
+
+    return new THREE.CanvasTexture(c);
+  }
+
+  // Back cover texture (generated synchronously via canvas)
+  const backTex = makeBackCover();
 
   // Page texture
   function makePageTex() {
@@ -955,15 +972,17 @@ document.querySelectorAll('.nav-links a').forEach(a => {
 
   // Materials
   const matCover = new THREE.MeshStandardMaterial({
-    map: coverTex,
+    color: 0xBD6953,
     roughness: 0.35,
     metalness: 0.05,
     side: THREE.DoubleSide,
   });
   const matBack = new THREE.MeshStandardMaterial({
-    color: 0x5a6b4d,
-    roughness: 0.6,
-    metalness: 0.0,
+    map: backTex,
+    color: 0xFFFFFF,
+    roughness: 0.45,
+    metalness: 0.05,
+    side: THREE.DoubleSide,
   });
   const matPages = new THREE.MeshStandardMaterial({
     map: pageTex,
@@ -971,7 +990,7 @@ document.querySelectorAll('.nav-links a').forEach(a => {
     metalness: 0.0,
   });
   const matSpine = new THREE.MeshStandardMaterial({
-    color: 0x4a5b3d,
+    color: 0x4E3111,
     roughness: 0.7,
     metalness: 0.0,
   });
@@ -994,7 +1013,7 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   // Subtle edge glow
   const edgeGeo = new THREE.BoxGeometry(bw * 1.01, bh * 1.01, bd * 1.01);
   const edgeMat = new THREE.MeshBasicMaterial({
-    color: 0xA8B99A,
+    color: 0xBD6953,
     transparent: true,
     opacity: 0.06,
     wireframe: true,
@@ -1007,12 +1026,53 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   const shadowMat = new THREE.MeshBasicMaterial({
     color: 0x000000,
     transparent: true,
-    opacity: 0.08,
+    opacity: 0.12,
   });
   const shadow = new THREE.Mesh(shadowGeo, shadowMat);
   shadow.rotation.x = -Math.PI / 2;
   shadow.position.y = -bh / 2 - 0.2;
   bookGroup.add(shadow);
+
+  // ===== FRONT COVER TEXTURE — COVER.png =====
+  (function loadCover() {
+    const loader = new THREE.TextureLoader();
+    const paths = ['COVER.png'];
+
+    try {
+      const loc = window.location.pathname;
+      const base = loc.substring(0, loc.lastIndexOf('/') + 1);
+      if (base) paths.push(base + 'COVER.png');
+    } catch(e) {}
+
+    function tryPath(index) {
+      if (index >= paths.length) {
+        console.error('All paths failed for COVER.png — cover will be terracotta.');
+        return;
+      }
+      loader.load(
+        paths[index],
+        function(texture) {
+          if (!texture.image || !texture.image.width || !texture.image.height) {
+            console.error('COVER.png loaded but has no dimensions — retrying next path.');
+            tryPath(index + 1);
+            return;
+          }
+          texture.encoding = THREE.sRGBEncoding;
+          texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+          texture.needsUpdate = true;
+          matCover.map = texture;
+          matCover.color.setHex(0xFFFFFF);
+          matCover.needsUpdate = true;
+        },
+        undefined,
+        function(err) {
+          console.error('Failed path: ' + paths[index], err);
+          tryPath(index + 1);
+        }
+      );
+    }
+    tryPath(0);
+  })();
 
   // ===== INTERACTION =====
   let isDragging = false;
@@ -1094,14 +1154,12 @@ document.querySelectorAll('.nav-links a').forEach(a => {
     momentumVY = dragVelY * 10;
   }
 
-  // Mouse
   container.addEventListener('mousedown', onDown);
   window.addEventListener('mousemove', onMove);
   window.addEventListener('mouseup', onUp);
   container.addEventListener('mouseenter', () => { isHovering = true; });
   container.addEventListener('mouseleave', () => { isHovering = false; });
 
-  // Touch
   container.addEventListener('touchstart', onDown, { passive: false });
   window.addEventListener('touchmove', onMove, { passive: false });
   window.addEventListener('touchend', onUp);
@@ -1139,7 +1197,7 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   // ===== RESIZE =====
   function onResize() {
     const w = container.clientWidth;
-    const h = container.clientHeight;
+    const h = container.clientHeight || 420;
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
@@ -1149,31 +1207,15 @@ document.querySelectorAll('.nav-links a').forEach(a => {
 
 // ===== GSAP SCROLL ANIMATIONS =====
 document.addEventListener('DOMContentLoaded', () => {
-  // Hero reveal
-  const heroTitle = document.getElementById('hero-title');
-  if (heroTitle && typeof SplitType !== 'undefined') {
-    try {
-      const split = new SplitType(heroTitle, { types: 'lines' });
-      gsap.from(split.lines, {
-        y: 60,
-        opacity: 0,
-        duration: 1.2,
-        stagger: 0.2,
-        ease: 'power4.out',
-        delay: 0.2,
-      });
-    } catch(e) {
-      gsap.from(heroTitle, { y: 40, opacity: 0, duration: 1, ease: 'power3.out', delay: 0.2 });
-    }
-  } else {
-    gsap.from(heroTitle, { y: 40, opacity: 0, duration: 1, ease: 'power3.out', delay: 0.2 });
-  }
+  // Hero entrance
+  gsap.from('.hero-content', {
+    y: 40,
+    opacity: 0,
+    duration: 1.2,
+    delay: 0.3,
+    ease: 'power4.out',
+  });
 
-  gsap.from('.hero-content .subtitle', { y: 30, opacity: 0, duration: 1, delay: 0.3, ease: 'power3.out' });
-  gsap.from('.hero-content p', { y: 30, opacity: 0, duration: 1, delay: 0.5, ease: 'power3.out' });
-  gsap.from('.hero-buttons', { y: 30, opacity: 0, duration: 1, delay: 0.7, ease: 'power3.out' });
-
-  // Book entrance
   gsap.from('#book-canvas-wrap', {
     y: 40,
     opacity: 0,
@@ -1181,6 +1223,54 @@ document.addEventListener('DOMContentLoaded', () => {
     duration: 1.4,
     delay: 0.1,
     ease: 'power4.out',
+  });
+
+  gsap.from('.hero-badge', {
+    y: 20,
+    opacity: 0,
+    duration: 0.8,
+    delay: 0.5,
+    ease: 'power3.out',
+  });
+
+  gsap.from('.subtitle', {
+    y: 20,
+    opacity: 0,
+    duration: 0.8,
+    delay: 0.6,
+    ease: 'power3.out',
+  });
+
+  gsap.from('.hero-content h1', {
+    y: 30,
+    opacity: 0,
+    duration: 1,
+    delay: 0.7,
+    ease: 'power3.out',
+  });
+
+  gsap.from('.hero-content p', {
+    y: 30,
+    opacity: 0,
+    duration: 1,
+    delay: 0.9,
+    ease: 'power3.out',
+  });
+
+  gsap.from('.hero-buttons', {
+    y: 30,
+    opacity: 0,
+    duration: 1,
+    delay: 1.1,
+    ease: 'power3.out',
+  });
+
+  gsap.from('.hero-features', {
+    y: 20,
+    opacity: 0,
+    duration: 0.8,
+    delay: 1.3,
+    ease: 'power3.out',
   });
 
   // === REVEAL ELEMENTS ON SCROLL ===
@@ -1341,51 +1431,16 @@ document.querySelectorAll('.magnetic-btn').forEach(btn => {
   });
 });
 
-// ===== FLOATING PARTICLES =====
-(function initParticles() {
-  const container = document.getElementById('particles');
-  const count = 20;
-  for (let i = 0; i < count; i++) {
-    const el = document.createElement('div');
-    el.className = 'leaf-particle';
-    el.style.left = Math.random() * 100 + '%';
-    el.style.top = Math.random() * 100 + '%';
-    el.style.width = (10 + Math.random() * 16) + 'px';
-    el.style.height = (8 + Math.random() * 12) + 'px';
-    el.style.background = ['#A8B99A', '#B89B5E', '#6B7B4D', '#C4B89A'][Math.floor(Math.random() * 4)];
-    el.style.borderRadius = Math.random() > 0.5 ? '50% 0 50% 0' : '0 50% 0 50%';
-    el.style.opacity = 0.15 + Math.random() * 0.2;
-    el.style.animation = `floatParticle ${15 + Math.random() * 20}s linear infinite`;
-    el.style.animationDelay = -Math.random() * 30 + 's';
-    container.appendChild(el);
-  }
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes floatParticle {
-      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0; }
-      10% { opacity: ${0.15 + Math.random() * 0.2}; }
-      90% { opacity: ${0.15 + Math.random() * 0.2}; }
-      100% { transform: translate(${60 + Math.random() * 80}px, ${-200 - Math.random() * 300}px) rotate(${180 + Math.random() * 360}deg) scale(0.5); opacity: 0; }
-    }
-  `;
-  container.appendChild(style);
-})();
-
-// ===== PARALLAX ON SCROLL (hero background) =====
+// ===== PARALLAX =====
 lenis.on('scroll', (e) => {
   const scrollY = e.scroll;
-  const sunlight = document.querySelector('.hero-sunlight');
   const bg = document.querySelector('.hero-bg');
-  if (sunlight) {
-    sunlight.style.transform = `translateX(-50%) translateY(${scrollY * 0.08}px)`;
-    sunlight.style.opacity = Math.max(0, 1 - scrollY / 500);
-  }
   if (bg) {
     bg.style.opacity = Math.max(0, 1 - scrollY / 800);
   }
 });
 
-console.log('🥗 Grandma\'s Kitchen — Healing wisdom, beautifully served.');
+console.log('✦ Grandma\'s Kitchen — 500 recipes, 300 desserts, 200 snacks.');
 </script>
 </body>
 </html>
